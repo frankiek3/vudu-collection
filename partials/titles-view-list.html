@@ -1,0 +1,47 @@
+<div class="columns">
+	<table>
+		<thead>
+			<tr>
+				<th width="8%">Quality</th>
+				<th width="8%">id</th>
+				<th width="15%" ng-if="orderProp == 'studio.name'">Studio</th>
+				<th>Title</th>
+				<th width="8%">Year</th>
+				<th width="8%" ng-if="orderProp == 'mpaaRating'">MPAA</th>
+				<th width="8%">Tomato</th>
+				<!-- <th width="8%">Type</th> -->
+				<th width="8%">UV</th>
+				<th width="8%">DMA</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat-start="title in filtered.titles = (titles | filter:{title: query} | orderBy:orderProp)">
+				<td class="center">{{title.videoQuality}} / {{title.bestAvailVideoQuality}}</td>
+				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(title.contentId)">{{title.contentId}}</a></td>
+				<td ng-if="orderProp == 'studio.name'">{{title.studio.name}}</td>
+				<td><a class="tiny button secondary expand radius" ng-click="title.collapsed = !title.collapsed">{{title.title}}<br /></a></td>
+				<td>{{title.releaseYear}}</td>
+				<!-- <td>{{title.bestAvailVideoQuality | uppercase}}</td> -->
+				<td ng-if="orderProp == 'mpaaRating'">{{title.mpaaRating | uppercase}}</td>
+				<td class="center">{{title.tomatoMeter}}</td>
+				<!-- <td>{{title.type}}</td> -->
+				<td class="uv center" ng-class="{'is-uv': title.isUV}">{{title.isUV | conditional:'Yes':'No'}}</td>
+				<td class="dma center" ng-class="{'is-dma': title.isDMA}">{{title.isDMA | conditional:'Yes':'No'}}</td>
+			</tr>
+			<tr ng-if="title.type=='bundle' && !title.collapsed" ng-repeat-end="" ng-repeat="subtitle in title.subitems">
+				<!-- <td colspan="{{col.subcolumns.length}}">{{subtitle.details}}</td> -->
+				<td class="center">{{subtitle.videoQuality}} / {{subtitle.bestAvailVideoQuality}}</td>
+				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(subtitle.contentId)">{{subtitle.contentId}}</a></td>
+				<td ng-if="orderProp == 'studio.name'">{{subtitle.studio.name}}</td>
+				<td>{{subtitle.title}}<br /></td>
+				<td>{{subtitle.releaseYear}}</td>
+				<!-- <td>{{subtitle.bestAvailVideoQuality | uppercase}}</td> -->
+				<td ng-if="orderProp == 'mpaaRating'">{{subtitle.mpaaRating | uppercase}}</td>
+				<td class="center">{{subtitle.tomatoMeter}}</td>
+				<!-- <td>{{subtitle.type}}</td> -->
+				<td class="uv center" ng-class="{'is-uv': subtitle.isUV}">{{subtitle.isUV | conditional:'Yes':'No'}}</td>
+				<td class="dma center" ng-class="{'is-dma': subtitle.isDMA}">{{subtitle.isDMA | conditional:'Yes':'No'}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

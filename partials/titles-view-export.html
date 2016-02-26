@@ -1,0 +1,11 @@
+<div class="columns">
+	<div class="row">
+		<div class="small-12 medium-6 medium-offset-3 columns">
+			<a class="success button radius expand" target="_blank" download="vudu-collection-movies.csv" ng-href="{{ filtered.titles = (titles | filter:{title: query} | orderBy:orderProp) | toExport | toCsv | toDownload }}">Download CSV</a>
+		</div>
+	</div>
+	
+	<!-- <textarea style="width: 100%; height: 5rem;">{{ filtered.titles = (titles | filter:{title: query} | orderBy:orderProp) | toExport }}</textarea> -->
+	<textarea style="width: 100%; height: 25rem;">{{ filtered.titles = (titles | filter:{title: query} | orderBy:orderProp) | toExport | toCsv }}</textarea>
+	
+</div>

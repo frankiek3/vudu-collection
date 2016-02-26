@@ -1,0 +1,129 @@
+/* app css stylesheet */
+
+header { margin-bottom: 1em; }
+footer {
+  color: #ddd;
+  font-size: .75rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.title-area a { cursor: default; }
+
+.top-bar .name h1 a { width: 70%; }
+@media only screen and (min-width: 40.063em){
+  .top-bar .name h1 a {
+    width: auto;
+  }
+}
+.top-bar.expanded .toggle-topbar a::after {
+  -webkit-box-shadow: 1px 10px 1px 1px #888888, 1px 16px 1px 1px #888888, 1px 22px 1px 1px #888888;
+  box-shadow: 0 10px 0 1px #888888, 0 16px 0 1px #888888, 0 22px 0 1px #888888;
+}
+
+.root-progress {
+  border: 0;
+  /*display: none;*/
+  padding: 0;
+  height: .5rem;
+  margin: 0;
+}
+
+.alert-box { margin-bottom: 0; }
+
+table { width: 100%; }
+table thead tr th { text-align: center; }
+form .button, table .button { margin: 0; }
+
+td.uv { text-indent: -9999px; }
+td.is-uv {
+  background-image: url(../img/uv-logo-pc-26x27.png);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+td.dma { text-indent: -9999px; }
+td.is-dma {
+  background-image: url(../img/dma_logo_27x27.png);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.movies-img {
+  /*background-image: url(../img/movies.png);
+  background-position: right;
+  background-repeat: no-repeat;*/
+  width: 32px;
+  height: 32px;
+}
+
+.tv-img {
+  /*background-image: url(../img/tv.png);
+  background-position: right;
+  background-repeat: no-repeat;*/
+  width: 32px;
+  height: 32px;
+}
+
+.gridStyle {
+  border-bottom: 2px solid #0088cc;
+  width: 400px; 
+  height: 300px
+}
+
+.bordered {
+  border-top: 2px solid #0088cc;
+  padding-bottom: 15px;
+}
+
+.img-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.uv-thumb:before {
+    display: inline-block;
+    position: absolute;
+    content: '';
+    background: url(../img/uv-logo-pc-26x27.png) no-repeat bottom 2px right 2px;;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.dma-thumb:before {
+    display: inline-block;
+    position: absolute;
+    content: '';
+    background: url(../img/dma_logo_27x27.png) no-repeat bottom 2px right 2px;;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.center { text-align: center; }
+
+button:focus, .button:focus {
+	outline-style: none;
+	outline-width: 0;
+}
+button.disabled, button[disabled], .button.disabled, .button[disabled] {
+	background-color: #999;
+	border-color: #888;
+}
+button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
+	background-color: #999;
+}
+
+.filter-row .count {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.5rem;
+}
+
+.layout-button-group { width: 100%; }
+.layout-button-group .active { background-color: #007095; }
+.layout-button-group .fa { font-size: 14px; }
+
+.th {
+  border-width: 0;
+}

@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="medium-8 large-6 small-centered columns">
+		<form name="userForm" ng-submit="logIn()">
+			<fieldset>
+				<legend>VUDU</legend>
+				
+				<div class="row">
+					<div class="columns">
+						<label>
+							<input name="userName" type="email" placeholder="Email" required ng-model="user.userName">
+						</label>
+						<!-- <small class="error" ng-show="false">Invalid entry</small> -->
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="columns">
+						<label>
+							<input name="password" type="password" placeholder="Password" required ng-model="user.password" ng-minlength="8">
+						</label>
+						<!-- <small class="error" ng-show="false">Invalid entry</small> -->
+					</div>
+				</div>
+				
+				<button type="submit" class="button radius expand" ng-disabled="userForm.$invalid">Sign in</button>
+				<small class="error" ng-if="error">{{error.message}}</small>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="medium-8 large-6 small-centered columns">
+		<section class="panel">
+			<h3>FMBB VUDU Collection</h3>
+			<p>This is a simple service created to list your movies from <a href="http://vudu.com" target="_blank">vudu.com</a>.</p>
+			<p>Your email and password are not stored or sent anywhere other than to VUDU's servers and are only used to request permission to view your titles. All the resulting data is sent directly from VUDU to your browser.</p>
+			<p>This is a JavaScript and HTML based application that lives in your browser. You can use the standard features of your modern browsers to view all the source code and network traffic if you're inclined. I'll post to github in a couple days as well but I need to do some therapeutic refactoring first.</p>
+			<p>Please send me a <a href="https://forum.vudu.com/member.php?298091-FattyMoBookyButt" target="_blank">direct message</a> on VUDU's forums or post a new message on the <a href="https://forum.vudu.com/showthread.php?931841-Direct-to-Digital-list-and-other-utilities-(Error-Tracker-Redemption-Log)" target="_blank">Disc to Digital Title List</a> thread if you have any feedback.</p>
+			<!-- <p>With that being said, I am expressing no warranty of security or prevention of odoriferous actions that could happen to you today, tomorrow or when you are sixty-four.</p> -->
+			<!-- <p>Enjoy,<br /> -->
+			<!-- <em>Mr. FattyMoBookyButt</em></p> -->
+		</section>
+	</div>
+</div>

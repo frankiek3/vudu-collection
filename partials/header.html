@@ -1,0 +1,20 @@
+<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
+<div class="contain-to-grid sticky" ng-if="isLoggedIn()">
+	<nav class="top-bar" data-topbar>
+		<ul class="title-area">
+			<li class="name">
+				<h1><a><i class="fa fa-ticket fa-lg"></i> fmbb-vudu-collection</a></h1>
+			</li>
+			<li class="toggle-topbar menu-icon"><a href="#" target="_self"></a></li>
+		</ul>
+		<section class="top-bar-section">
+			<ul class="right">
+				<li class="has-form"><a class="button alert" ng-click="logOut()">Sign Off</a></li>
+			</ul>
+		</section>
+	</nav>
+</div>
+
+<progressbar class="root-progress" type="{{progress.type}}" value="progress.value" ng-if="isLoggedIn()"></progressbar>
+
