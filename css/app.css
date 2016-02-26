@@ -49,17 +49,19 @@ td.is-dma {
 }
 
 .movies-img {
-  /*background-image: url(../img/movies.png);
-  background-position: right;
-  background-repeat: no-repeat;*/
+  background-image: url(../img/movies.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 32px 32px;
   width: 32px;
   height: 32px;
 }
 
 .tv-img {
-  /*background-image: url(../img/tv.png);
-  background-position: right;
-  background-repeat: no-repeat;*/
+  background-image: url(../img/tv.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 32px 32px;
   width: 32px;
   height: 32px;
 }
