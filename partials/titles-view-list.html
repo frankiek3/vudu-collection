@@ -3,7 +3,7 @@
 		<thead>
 			<tr>
 				<th width="8%">Quality</th>
-				<th width="8%">id</th>
+				<th width="8%">ID</th>
 				<th width="15%" ng-if="orderProp == 'studio.name'">Studio</th>
 				<th>Title</th>
 				<th width="8%">Year</th>
@@ -19,7 +19,8 @@
 				<td class="center">{{title.videoQuality}} / {{title.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(title.contentId)">{{title.contentId}}</a></td>
 				<td ng-if="orderProp == 'studio.name'">{{title.studio.name}}</td>
-				<td><a class="tiny button secondary expand radius" ng-click="title.collapsed = !title.collapsed">{{title.title}}<br /></a></td>
+				<td ng-if="title.subitems"><a class="tiny button secondary expand radius" ng-click="title.collapsed = !title.collapsed">{{title.title}}<br /></a></td>
+				<td ng-if="!title.subitems">{{title.title}}<br /></td>
 				<td>{{title.releaseYear}}</td>
 				<!-- <td>{{title.bestAvailVideoQuality | uppercase}}</td> -->
 				<td ng-if="orderProp == 'mpaaRating'">{{title.mpaaRating | uppercase}}</td>

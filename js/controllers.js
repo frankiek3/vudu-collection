@@ -5,14 +5,12 @@ angular.module('app.controllers', []).
     function ($scope, $location, $timeout, alertService, progressService, vuduFactory) {
       // console.log('');
       // console.group('AppCtrl');
-      
       // alertService.push('AppCtrl to da rescue');
       
       $scope.alerts = alertService.alerts;
       $scope.closeAlert = alertService.close;
       
       $scope.progress = progressService;
-      
       $scope.isLoggedIn = vuduFactory.isAuthenticated;
       
       $scope.logOut = function() {
@@ -30,24 +28,21 @@ angular.module('app.controllers', []).
           // console.log('logOut():failure:');
           // console.log('response: ', response);
         });
-        
         // console.groupEnd();
       }
-      
       // console.groupEnd();
     }
   ]).
   filter('toExport', function() {
     return function(input) {
-      var r = [];
-      var i = 0;
+      var r = [[
+        'videoQuality','bestAvailVideoQuality','contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV','isDMA'
+      ]];
       
-      r.push([
-        'contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV','isDMA'
-      ]);
-      
-      for(i = 0; i < input.length; i++){
+      for(var i = 0; i < input.length; i++){
         r.push([
+          input[i].videoQuality,
+          input[i].bestAvailVideoQuality,
           input[i].contentId,
           '"' + input[i].title.replace(/"/g, '""') + '"',
           input[i].country,
@@ -66,20 +61,64 @@ angular.module('app.controllers', []).
       return r;
     };
   }).
+  filter('toTVExport', function() {
+    return function(input) {
+      var r = [[
+        'videoQuality','bestAvailVideoQuality','contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV'
+      ]];
+      
+      for(var i = 0; i < input.length; i++){
+        r.push([
+          input[i].videoQuality,
+          input[i].bestAvailVideoQuality,
+          input[i].contentId,
+          '"' + input[i].title.replace(/"/g, '""') + '"',
+          input[i].country,
+          input[i].language,
+          input[i].lengthSeconds,
+          input[i].mpaaRating,
+          input[i].releaseTime,
+          input[i].studio.name,
+          input[i].tomatoMeter,
+          input[i].type,
+          input[i].isUV
+        ]);
+        if(input[i].subitems)
+        {
+          var subitem = input[i].subitems;
+          for(var j = 0; j < subitem.length; j++){
+            if(subitem[j].type == 'episode') break;
+            r.push([
+              subitem[j].videoQuality,
+              subitem[j].bestAvailVideoQuality,
+              subitem[j].contentId,
+              '"' + subitem[j].title.replace(/"/g, '""') + '"',
+              subitem[j].country,
+              subitem[j].language,
+              subitem[j].lengthSeconds,
+              subitem[j].mpaaRating,
+              subitem[j].releaseTime,
+              subitem[j].studio.name,
+              subitem[j].tomatoMeter,
+              subitem[j].type,
+              subitem[j].isUV
+            ]);
+          }
+        }
+      }
+      
+      return r;
+    };
+  }).
   filter('toCsv', function() {
     return function(input) {
       var rows = [];
-      var r = '';
-      var i = 0;
-      
-      for(i = 0; i < input.length; i++){
+
+      for(var i = 0; i < input.length; i++){
           rows.push(input[i].join(','));
       }
-      
-      // r = 'data:attachment/csv,' + encodeURI(rows.join('\r\n'));
-      r = rows.join('\r\n');
-      
-      return r;
+
+      return rows.join('\r\n');
     };
   }).
   filter('toDownload', function() {
@@ -96,7 +135,7 @@ angular.module('app.controllers', []).
       
       $scope.displayAs = 'list';
       $scope.$watch('displayAs', function() {
-        $window.ga('send', 'pageview', { page: $location.path() + '-as-' + $scope.displayAs });
+        //$window.ga('send', 'pageview', { page: $location.path() + '-as-' + $scope.displayAs });
       });
       
       $scope.query = '';
@@ -114,6 +153,19 @@ angular.module('app.controllers', []).
           }
         }
       };
+
+      $scope.TVthumbs = {
+        pageNum: 0,
+        pageInationRange: [],
+        pageSize: 36,
+        pageTotal: function(){
+          if($scope.filtered.tv.length && $scope.TVthumbs.pageSize > 0){
+            return Math.ceil($scope.filtered.tv.length / $scope.TVthumbs.pageSize);
+          } else {
+            return 1;
+          }
+        }
+      };
       
       $scope.$watch('thumbs.pageNum', function() {
         if($scope.thumbs.pageNum > $scope.thumbs.pageTotal() - 1){
@@ -122,9 +174,23 @@ angular.module('app.controllers', []).
           $scope.thumbs.pageNum = $scope.thumbs.pageTotal() - 1;
         }
       });
+
+      $scope.$watch('TVthumbs.pageNum', function() {
+        if($scope.TVthumbs.pageNum > $scope.TVthumbs.pageTotal() - 1){
+          $scope.TVthumbs.pageNum = 0;
+        } else if($scope.TVthumbs.pageNum < 0){
+          $scope.TVthumbs.pageNum = $scope.TVthumbs.pageTotal() - 1;
+        }
+      });
+
       $scope.$watch('thumbs.pageTotal()', function() {
         if($scope.thumbs.pageNum > $scope.thumbs.pageTotal() - 1) $scope.thumbs.pageNum = $scope.thumbs.pageTotal() - 1;
       });
+
+      $scope.$watch('TVthumbs.pageTotal()', function() {
+        if($scope.TVthumbs.pageNum > $scope.TVthumbs.pageTotal() - 1) $scope.TVthumbs.pageNum = $scope.TVthumbs.pageTotal() - 1;
+      });
+
       $scope.$watch('thumbs.pageNum + thumbs.pageTotal()', function() {
         var page = +$scope.thumbs.pageNum; // force int
         var total = +$scope.thumbs.pageTotal();
@@ -142,6 +208,22 @@ angular.module('app.controllers', []).
         }
       });
 
+      $scope.$watch('TVthumbs.pageNum + TVthumbs.pageTotal()', function() {
+        var page = +$scope.TVthumbs.pageNum; // force int
+        var total = +$scope.TVthumbs.pageTotal();
+        var pad = Math.min(Math.floor(total / 2), 3);
+        
+        if(total){
+          $scope.TVthumbs.pageInationRange.length = 0;
+          for(var i = page - pad; i <= page + pad; i++){
+            if(i < 0){
+              $scope.TVthumbs.pageInationRange.push(Math.abs(total + i) % total);
+            } else {
+              $scope.TVthumbs.pageInationRange.push(Math.abs(i) % total);
+            }
+          }
+        }
+      });
 
       $scope.sum = function (items, prop) {
           if (items == null) {
@@ -152,17 +234,20 @@ angular.module('app.controllers', []).
           }, 0);
       };
       
-      
+      var batchLimit = 100;
+
+      $scope.contentVariants = {};
+
       $scope.movieProgress = 0;
       $scope.titles = [];
       $scope.filtered = { titles: [] };
       $scope.totalCount = 0;
       $scope.allCount = 0;
+
       var cnt = 0;
-      var batchLimit = 100;
       
       var getTitles = function() {
-        vuduFactory.getTitlesOwned(cnt).then(function(data) {
+        vuduFactory.getTitlesOwned(cnt, $scope.contentVariants).then(function(data) {
           $scope.totalCount = data.totalCount;
           
           angular.forEach(data.content, function(value, key) {
@@ -186,7 +271,6 @@ angular.module('app.controllers', []).
           progressService.type = progressService.value==100 ? 'success' : '';
           
         }, function(response) {
-          
           if(response.data.error == true && response.data.status == 'authenticationExpired'){
             alertService.push('Authentication expired. Please sign off and sign in again.', 'warning');
           } else if(response.data.error == true && response.data.status){
@@ -194,14 +278,11 @@ angular.module('app.controllers', []).
           } else {
             alertService.push('Unknown error occured. Please sign off and try again. If the problem persists, please wait an hour and/or let FattyMoBookyButt know in the vudu forums.', 'warning');
           }
-          
         }, function(response) {
           // console.log('getTitlesOwned:notify:');
           // console.log('data: ', data);
         });
       }
-      getTitles();
-
 
 
       $scope.tvProgress = 0;
@@ -213,7 +294,7 @@ angular.module('app.controllers', []).
       var cntTV = 0;
       
       var getTV = function() {
-        vuduFactory.getTVOwned(cntTV).then(function(data) {
+        vuduFactory.getTVOwned(cntTV, $scope.contentVariants).then(function(data) {
           $scope.totalTV = data.totalCount;
           
           angular.forEach(data.content, function(value, key) {
@@ -237,7 +318,6 @@ angular.module('app.controllers', []).
           progressService.type = progressService.value==100 ? 'success' : '';
           
         }, function(response) {
-          
           if(response.data.error == true && response.data.status == 'authenticationExpired'){
             alertService.push('Authentication expired. Please sign off and sign in again.', 'warning');
           } else if(response.data.error == true && response.data.status){
@@ -245,13 +325,67 @@ angular.module('app.controllers', []).
           } else {
             alertService.push('Unknown error occured. Please sign off and try again. If the problem persists, please wait an hour and/or let FattyMoBookyButt know in the vudu forums.', 'warning');
           }
-          
         }, function(response) {
           // console.log('getTitlesOwned:notify:');
           // console.log('data: ', data);
         });
       }
-      getTV();
+
+      var allCnt = 0;
+var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
+      var getContent = function() {
+        vuduFactory.getContentVariantsOwned(allCnt).then(function(data) {
+          //$scope.totalCount = data.totalCount;
+          
+          angular.forEach(data.content, function(value, key) {
+            if($scope.contentVariants[key])
+            {
+              console.log("Duplicate contentId: "+key);
+              if(videoQualityList[value.videoQuality] > videoQualityList[$scope.contentVariants[key].videoQuality])
+              {
+                $scope.contentVariants[key] = value;
+              }
+            }
+            else
+            {
+              $scope.contentVariants[key] = value;
+            }
+          });
+
+          //$scope.allCount = $scope.sum($scope.titles,'count');
+          
+          if(data.moreBelow && allCnt < batchLimit - 1){
+            allCnt++;
+            
+            //$scope.movieProgress = Math.ceil($scope.titles.length * 100 / $scope.totalCount);
+            
+            getContent();
+          } else {
+            // progressService.reset();
+          //  $scope.movieProgress = 100;
+            
+            getTitles();
+            getTV();
+
+          }
+          //progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
+          //progressService.type = progressService.value==100 ? 'success' : '';
+        }, function(response) {
+          if(response.data.error == true && response.data.status == 'authenticationExpired'){
+            alertService.push('Authentication expired. Please sign off and sign in again.', 'warning');
+          } else if(response.data.error == true && response.data.status){
+            alertService.push('Error occurred. (' + response.data.status + ')', 'warning');
+          } else {
+            alertService.push('Unknown error occured. Please sign off and try again. If the problem persists, please wait an hour and/or let FattyMoBookyButt know in the vudu forums.', 'warning');
+          }
+        }, function(response) {
+          // console.log('getTitlesOwned:notify:');
+          // console.log('data: ', data);
+        });
+      }
+      getContent();
+
+      
 
 
       // $scope.uvvuLink = function(id) {
@@ -270,7 +404,6 @@ angular.module('app.controllers', []).
     }]).
   controller('UserCtrl', ['$scope', '$location', 'alertService', 'vuduFactory',
     function ($scope, $location, alertService, vuduFactory) {
-      
       $scope.error = null;
       $scope.user = null;
       

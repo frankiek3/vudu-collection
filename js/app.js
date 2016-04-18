@@ -20,6 +20,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
     });
   }]).
   config(['$compileProvider', function($compileProvider){
+    //$compileProvider.debugInfoEnabled(false);
     if (angular.isDefined($compileProvider.urlSanitizationWhitelist)) {
       $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|data):/);
     } else {
@@ -64,7 +65,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
       }
     });
     $rootScope.$on('$locationChangeSuccess', function(event) {
-      $window.ga('send', 'pageview', { page: $location.path() });
+      //$window.ga('send', 'pageview', { page: $location.path() });
     });
   });
 

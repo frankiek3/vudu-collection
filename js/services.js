@@ -46,6 +46,7 @@ angular.module('app.services', []).
     var appId = 'fmbb-vudu-collection';
     var count = 100;
     var user = null;
+    var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};
 		
     var isAuthenticated = function() {
       return user && user.sessionKey && user.id;
@@ -105,7 +106,7 @@ angular.module('app.services', []).
 			return deferred.promise;
 		};
 
-		var getTVOwned = function(page) {
+		var getTVOwned = function(page, contentVariants) {
 			return $http.jsonp(url, { 
 				params: {
 					claimedAppId: appId,
@@ -125,7 +126,7 @@ angular.module('app.services', []).
 					callback: 'JSON_CALLBACK'
 				}
 			}).then(function(response) {
-				return parseVuduResponse(response);
+				return parseVuduResponse(response, contentVariants);
 			}, function(response) {
 				console.log('vuduFactory.getTVOwned():failure:');
 				console.log('response: ', response);
@@ -135,7 +136,7 @@ angular.module('app.services', []).
 			});
 		};
 
-		var getTitlesOwned = function(page) {
+		var getTitlesOwned = function(page, contentVariants) {
 			return $http.jsonp(url, { 
 				params: {
 					claimedAppId: appId,
@@ -154,7 +155,7 @@ angular.module('app.services', []).
 					callback: 'JSON_CALLBACK'
 				}
 			}).then(function(response) {
-				return parseVuduResponse(response);
+				return parseVuduResponse(response, contentVariants);
 			}, function(response) {
 				console.log('vuduFactory.getTitlesOwned():failure:');
 				console.log('response: ', response);
@@ -181,7 +182,7 @@ angular.module('app.services', []).
 					callback: 'JSON_CALLBACK'
 				}
 			}).then(function(response) {
-				return parseVuduResponse(response);
+				return parseVuduResponse(response, null);
 			}, function(response) {
 				console.log('vuduFactory.getTitlesOwned():failure:');
 				console.log('response: ', response);
@@ -192,7 +193,7 @@ angular.module('app.services', []).
 		};
 
 
-    var getSeriesSeasons = function(item) {
+    var getSeriesSeasons = function(item, offset, contentVariants) {
       return $http.jsonp(cachedurl, { 
         params: {
 					claimedAppId: appId,
@@ -201,15 +202,15 @@ angular.module('app.services', []).
 					followup: ['promoTags', 'ratingsSummaries', 'totalCount'],
 					includeComingSoon: true,
 					listType: 'useful',
-					offset: 0,
-					responseSubset: 'micro',
+					offset: offset,
+					//responseSubset: 'micro',
 					seriesId: item.contentId,
-					sortBy: '-seasonNumber',
+					sortBy: 'seasonNumber',
 					type: 'season',
 					callback: 'JSON_CALLBACK'
 				}
 			}).then(function(response) {
-        return parseVuduResponse(response);
+        return parseVuduResponse(response, contentVariants);
 			}, function(response) {
         console.log('vuduFactory.getBundledTitles():failure:');
         console.log('response: ', response);
@@ -219,11 +220,10 @@ angular.module('app.services', []).
       });
     };
 
-//claimedAppId=myvudu&format=application/json&_type=contentVariantSearch&count=100&dimensionality=any&listType=rented&offset=0&sessionKey=&userId=8202225
+//contentEncoding/gzip/
 
-
-    var getSeasonEpisodes = function(item) {
-      return $http.jsonp(cachedurl, { 
+    var getSeasonEpisodes = function(item, contentVariants) {
+      return $http.jsonp(cachedurl, {
         params: {
 					claimedAppId: appId,
 					format: 'application/json',
@@ -237,7 +237,7 @@ angular.module('app.services', []).
 					callback: 'JSON_CALLBACK'
 				}
 			}).then(function(response) {
-        return parseVuduResponse(response);
+        return parseVuduResponse(response, contentVariants);
 			}, function(response) {
         console.log('vuduFactory.getBundledTitles():failure:');
         console.log('response: ', response);
@@ -247,7 +247,7 @@ angular.module('app.services', []).
       });
     };
 
-    var getBundledTitles = function(item) {
+    var getBundledTitles = function(item, contentVariants) {
       return $http.jsonp(cachedurl, { 
         params: {
 					claimedAppId: appId,
@@ -262,7 +262,7 @@ angular.module('app.services', []).
 					callback: 'JSON_CALLBACK'
 				}
 			}).then(function(response) {
-        return parseVuduResponse(response);
+        return parseVuduResponse(response, contentVariants);
 			}, function(response) {
         console.log('vuduFactory.getBundledTitles():failure:');
         console.log('response: ', response);
@@ -272,11 +272,11 @@ angular.module('app.services', []).
       });
     };
 
-    var parseVuduKey = function(data, key) {
+    var parseFirstVuduKey = function(data, key) {
       return data[key] && data[key][0];
     };
 
-    var parseVuduType = function(data) {
+    var parseVuduType = function(data, contentVariants) {
       var item = {};
       
       if(data._type == 'content'){
@@ -299,29 +299,25 @@ angular.module('app.services', []).
         // if(!data.tomatoMeter || !data.tomatoMeter[0]) console.log('NOFIND: data.tomatoMeter');
         // if(!data.type || !data.type[0]) console.log('NOFIND: data.type');
         // if(!data.ultraVioletLogicalAssetId || !data.ultraVioletLogicalAssetId[0]) console.log('NOFIND: data.ultraVioletLogicalAssetId');
-        
+        var contentId = data.contentId[0];
+
         item = {
           _type: data._type,
           
-          contentId: data.contentId[0],
+          contentId: contentId,
           title: data.title && data.title[0],
           description: data.description && data.description[0],
-          
 
-          videoQuality: data.videoQuality ? data.videoQuality[0] : null,
-//videoQuality
           bestAvailVideoQuality: data.bestStreamableVideoQuality ? data.bestStreamableVideoQuality[0] : null,
 //data.bestDashVideoQuality ? data.bestDashVideoQuality[0] : null,
 //bestStreamableVideoQuality
           country: data.country ? data.country[0] : null,
-          distributionStudio: data.distributionStudio ? parseVuduType(data.distributionStudio[0]) : null,
           language: data.language ? data.language[0] : null,
           lengthSeconds: data.lengthSeconds ? data.lengthSeconds[0] : null,
           mpaaRating: data.mpaaRating ? data.mpaaRating[0] : null,
           placardUrl: data.placardUrl ? data.placardUrl[0] : null,
           posterCopyright: data.posterCopyright ? data.posterCopyright[0] : null,
           posterUrl: data.posterUrl ? data.posterUrl[0] : null,
-          ratingsSummaries: data.ratingsSummaries ? parseVuduType(data.ratingsSummaries[0]) : null,
           releaseTime: data.releaseTime ? data.releaseTime[0] : null,
           starRating: data.starRating ? data.starRating[0] : 0,
           studio: data.studio ? parseVuduType(data.studio[0]) : null,
@@ -329,22 +325,26 @@ angular.module('app.services', []).
           type: data.type ? data.type[0] : null,
           haveUV: data.ultraVioletSyncStatus && data.ultraVioletSyncStatus[0],//"imported","exported"
           hasUV: data.ultraVioletLogicalAssetId && data.ultraVioletLogicalAssetId[0],
+          // ultraVioletLogicalAssetId: data.ultraVioletLogicalAssetId ? data.ultraVioletLogicalAssetId[0] : null,
+          // ultraVioletSyncStatus: data.ultraVioletSyncStatus ? data.ultraVioletSyncStatus[0] : null
           isDMA: data.keyChestEditionUmid && data.keyChestEditionUmid[0],
 //ptoKeyChestEligible
 
-//type == "episode"
+          distributionStudio: data.distributionStudio ? parseVuduType(data.distributionStudio[0]) : null,
+          ratingsSummaries: data.ratingsSummaries ? parseVuduType(data.ratingsSummaries[0]) : null,
+
           containerIds: data.containerId,
+          // containerId: data.containerId || null,
           seasonId: data.seasonId && data.seasonId[0],
           seasonNumber: data.seasonNumber && data.seasonNumber[0],
           seriesId: data.seriesId && data.seriesId[0],
-          episodeNumberInSeason: data.episodeNumberInSeason && data.episodeNumberInSeason[0],
+          episodeNumberInSeason: data.episodeNumberInSeason ? data.episodeNumberInSeason[0] : null,
 
           
           // colorType: data.colorType ? data.colorType[0] : null,
-          // 
-          // containerId: data.containerId || null,
+
           // contentRating: parseVuduType(data.contentRating[0]),
-          //           
+
           // bestDashVideoQuality: data.bestDashVideoQuality[0],
           // bestFlashVideoQuality: data.bestFlashVideoQuality[0],
           // bestLiveStreamVideoQuality: data.bestLiveStreamVideoQuality[0],
@@ -365,59 +365,144 @@ angular.module('app.services', []).
           // 
           // tomatoCertifiedFresh: data.tomatoCertifiedFresh ? data.tomatoCertifiedFresh[0] : null,
           // tomatoIcon: data.tomatoIcon ? data.tomatoIcon[0] : null,
-          // 
-          // ultraVioletLogicalAssetId: data.ultraVioletLogicalAssetId ? data.ultraVioletLogicalAssetId[0] : null,
-          // ultraVioletSyncStatus: data.ultraVioletSyncStatus ? data.ultraVioletSyncStatus[0] : null
-        }
-        item.isUV = item.haveUV || item.hasUV;
+        };
         item.titleSort = item.title.replace(/^(A|An|The)+\s+/i, '');
         if(item.mpaaRating == 'nrFamilyFriendly') item.mpaaRating = 'nrff';
         if(item.releaseTime) item.releaseYear = item.releaseTime.substr(0,4);
 
+        if(contentVariants && contentVariants[contentId])
+        {
+          var contentVariant = contentVariants[contentId];
+          item.videoQuality = contentVariant.videoQuality;
+          item.ultraVioletSyncStatus = contentVariant.ultraVioletSyncStatus;
+        }
+        item.isUV = item.haveUV || item.hasUV || item.ultraVioletSyncStatus;
+
+
         if(item.type == 'bundle')
         {
-          getBundledTitles(item).then(function(data) {
+          item.subitems = [];
+          getBundledTitles(item, contentVariants).then(function(data) {
             item.subitems = data.content;
-            item.count = data.content.length;
+            item.count = item.subitems.length;
+            angular.forEach(item.subitems, function(value, key) {
+              value.parent = item;
+              if(!value.videoQuality)
+              {
+                if(item.videoQuality && value.bestAvailVideoQuality)
+                {
+                  value.videoQuality = videoQualityList[item.videoQuality] > videoQualityList[value.bestAvailVideoQuality] ? value.bestAvailVideoQuality : item.videoQuality;
+                }
+              }
+            });
           });
+        }
+        else if(item.type == 'episode')
+        {
+          if(item.episodeNumberInSeason)
+          {
+            item.title = item.episodeNumberInSeason + ": " + item.title;
+          }
         }
         else if(item.type == 'season')
         {
-console.log(item.title);
-          getSeasonEpisodes(item).then(function(data) {
-            item.episodes = data.content;
+          item.subitems = [];
+          getSeasonEpisodes(item, contentVariants).then(function(data) {
+            var haveSome = contentVariants[contentId] || (item.parent && contentVariants[item.parent.contentId]);
+            if(item.parent && item.parent.isUV)
+            {
+              item.isUV = true;
+            }
+            angular.forEach(data.content, function(value, key) {
+              if(item.isUV && value.episodeNumberInSeason!="0" && !value.isUV)
+              {
+                value.isUV = true;
+              }
+              if(!value.videoQuality)
+              {
+                if(item.videoQuality && value.bestAvailVideoQuality)
+                {
+                  value.videoQuality = videoQualityList[item.videoQuality] > videoQualityList[value.bestAvailVideoQuality] ? value.bestAvailVideoQuality : item.videoQuality;
+                }
+                //else if(!item.videoQuality && value.bestAvailVideoQuality)
+                //{
+                //  value.videoQuality = value.bestAvailVideoQuality;
+                //}
+                //else if(item.videoQuality && !value.bestAvailVideoQuality)
+                //{
+                //  value.videoQuality = item.videoQuality;
+                //}
+              }
+              if(haveSome || contentVariants[value.contentId]) item.subitems.push(value);
+            });
+            if(!item.subitems.length)
+            {
+//try{
+              item.parent.subitems.splice(item.parent.subitems.indexOf(item), 1);
+//}catch(e){push();}
+            }
           });
         }
         else if(item.type == 'series')
         {
-          item.episodes = [];
-          getSeriesSeasons(item).then(function(data) {
-            item.seasons = data.content;
-            angular.forEach(data.content, function(value, key) {
-              item.episodes.push.apply(item.episodes, value.episodes);
+          item.subitems = [];
+          var offset = 0;
+          var getTVSeasons = function()
+          {
+            getSeriesSeasons(item, offset, contentVariants).then(function(data) {
+              var oneSeason = data.content[0];
+              oneSeason.parent = item;
+              item.subitems.push(oneSeason);
+
+              if(data.moreBelow)
+              {
+                offset++;
+                getTVSeasons();
+              }
+              //else
+              //{
+              //  item.count = data.subitems.length;
+              //}
             });
-          });
+          };
+          getTVSeasons();
         }
+
 
       } else if(data._type == 'contentVariant'){
         item = {
           _type: data._type,
-          contentId: data.contentId,
-          contentVariantId: data.contentVariantId,
-          ultraVioletSyncStatus: data.ultraVioletSyncStatus,
-          videoQuality: data.videoQuality
-        }
+          contentId: data.contentId[0],
+          contentVariantId: data.contentVariantId[0],
+          ultraVioletSyncStatus: data.ultraVioletSyncStatus && data.ultraVioletSyncStatus[0],
+          videoQuality: data.videoQuality[0]
+        };
       } else if(data._type == 'contentVariantList'){
         item = {
           _type: data._type,
-          content: [],
+          content: {},
           moreAbove: data.moreAbove[0] == 'true',
           moreBelow: data.moreBelow[0] == 'true',
           totalCount: data.totalCount[0]
           // zoom: zoomData?
-        }
+        };
         angular.forEach(data.contentVariant, function(value, key) {
-          item.content.push(parseVuduType(value));//[key] = parseVuduType(value);
+          var contentVariant = parseVuduType(value);
+          var cId = contentVariant.contentId;
+          if(item.content[cId])
+          {
+            //item.content[cId].push(contentVariant);
+            console.log("Duplicate contentId: "+cId);
+            //console.log(contentVariant.videoQuality+" "+item.content[cId].videoQuality);
+            if(videoQualityList[contentVariant.videoQuality] > videoQualityList[item.content[cId].videoQuality])
+            {
+              item.content[cId] = contentVariant;
+            }
+          }
+          else
+          {
+            item.content[cId] = contentVariant;
+          }
         });
       } else if(data._type == 'contentList'){
         item = {
@@ -427,9 +512,9 @@ console.log(item.title);
           moreBelow: data.moreBelow[0] == 'true',
           totalCount: data.totalCount[0]
           // zoom: zoomData?
-        }
+        };
         angular.forEach(data.content, function(value, key) {
-          item.content.push(parseVuduType(value));//[key] = parseVuduType(value);
+          item.content.push(parseVuduType(value, contentVariants));//[key] = parseVuduType(value);
         });
       } else if(data._type == 'contentRating'){
         item = {
@@ -473,9 +558,7 @@ console.log(item.title);
       return item;
     };
     
-    var parseVuduResponse = function(response) {
-      var results = {};
-      
+    var parseVuduResponse = function(response, contentVariants) {
       if(response.data._type == 'error'){
         if(response.data.code && response.data.code[0]){
           response.data = { 
@@ -497,16 +580,15 @@ console.log(item.title);
           };
         }
         return $q.reject(response);
-      } else {
-        results = parseVuduType(response.data);
       }
       
-      return results;
+      return parseVuduType(response.data, contentVariants);
     };
 
     return {
       getTitlesOwned: getTitlesOwned,
       getTVOwned: getTVOwned,
+      getContentVariantsOwned: getContentVariantsOwned,
       isAuthenticated: isAuthenticated,
       signIn: sessionKeyRequest,
       signOut: signOut

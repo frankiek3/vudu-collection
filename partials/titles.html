@@ -4,6 +4,10 @@
 			<div class="small-9 medium-8 columns">
 				<span class="prefix" ng-if="!query.length">{{filtered.titles.length && filtered.titles.length != totalCount | conditional:filtered.titles.length+' ('+sum(filtered.titles,'count')+') of '}}{{totalCount}} ({{allCount}})</span>
 				<a class="button active prefix" ng-if="query.length">{{filtered.titles.length}} ({{sum(filtered.titles,'count')}}) of {{totalCount}} ({{allCount}})</a>
+		<!--
+		<div class="count">
+			<span class="secondary round label" ng-class="{secondary: !query.length}">{{filtered.titles.length && filtered.titles.length != totalCount | conditional:filtered.titles.length + ' of '}}{{totalCount}}</span>
+		</div> -->
 			</div>
 		</div>
 	</div>
@@ -31,11 +35,6 @@
 				<a class="button active prefix" ng-if="query.length">{{filtered.tv.length}} ({{sum(filtered.tv,'count')}}) of {{totalTV}} ({{allTV}})</a>
 			</div>
 		</div>
-		
-		<!-- <input type="text" placeholder="Filter" ng-model="query">
-		<div class="count">
-			<span class="secondary round label" ng-class="{secondary: !query.length}">{{filtered.titles.length && filtered.titles.length != totalCount | conditional:filtered.titles.length + ' of '}}{{totalCount}}</span>
-		</div> -->
 	</div>
 
 	<div class="medium-1 columns">
@@ -63,10 +62,12 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="medium-4 columns">
 		<select ng-model="orderProp">
 			<option value="">Date Acquired</option>
 			<option value="titleSort">Alphabetical</option>
+			<option value="-videoQuality">Video Quality</option>
 			<option value="mpaaRating">MPAA</option>
 			<option value="-releaseTime">Release Date</option>
 			<option value="studio.name">Studio</option>

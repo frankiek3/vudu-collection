@@ -1,31 +1,39 @@
 <div class="columns">
 	<ul class="small-block-grid-5 medium-block-grid-7 large-block-grid-9">
-		<li ng-repeat-start="title in filtered.tv = (tv | filter:{title: query} | orderBy:orderProp) | pageSlice:thumbs.pageNum:thumbs.pageSize">
+		<li ng-repeat-start="title in filtered.tv = (tv | filter:{title: query} | orderBy:orderProp) | pageSlice:TVthumbs.pageNum:TVthumbs.pageSize">
 			<div class="clearfix img-wrap">
 				<div class="left has-tip" tooltip="{{title.title}}" tooltip-popup-delay="500" tooltip-placement="bottom" ng-class="{'uv-thumb': title.isUV}">
 					<a ng-click="vuduLink(title.contentId)"><img ng-src="{{title.posterUrl}}" class="th"></a>
 				</div>
 			</div>
 		</li>
-		<li ng-if="(title.type=='season' || title.type=='series') && title.expanded" ng-repeat-end="" ng-repeat="subtitle in title.episodes">
+		<li ng-if="(title.type=='bundle' || title.type=='season' || title.type=='series') && title.expanded" ng-repeat-end="" ng-repeat="subtitle in title.subitems">
 			<div class="clearfix img-wrap">
 				<div class="left has-tip" tooltip="{{subtitle.title}}" tooltip-popup-delay="500" tooltip-placement="bottom" ng-class="{'uv-thumb': subtitle.isUV}">
 					<a ng-click="vuduLink(subtitle.contentId)"><img ng-src="{{subtitle.posterUrl}}" class="th"></a>
 				</div>
 			</div>
 		</li>
+		<li ng-if="subtitle.type=='season' && subtitle.expanded && title.expanded" ng-repeat-end="" ng-repeat="episode in subtitle.subitems">
+			<div class="clearfix img-wrap">
+				<div class="left has-tip" tooltip="{{episode.title}}" tooltip-popup-delay="500" tooltip-placement="bottom" ng-class="{'uv-thumb': episode.isUV}">
+					<a ng-click="vuduLink(episode.contentId)"><img ng-src="{{episode.posterUrl}}" class="th"></a>
+				</div>
+			</div>
+		</li>
+		<li ng-repeat-end="" ng-if="0"></li>
 	</ul>
-	
+
 	<div class="pagination-centered">
 		<ul class="pagination">
-			<li class="arrow" ng-if="thumbs.pageTotal() > 1">
-				<a ng-click="thumbs.pageNum = thumbs.pageNum - 1">&laquo;</a>
+			<li class="arrow" ng-if="TVthumbs.pageTotal() > 1">
+				<a ng-click="TVthumbs.pageNum = TVthumbs.pageNum - 1">&laquo;</a>
 			</li>
-			<li ng-repeat="n in thumbs.pageInationRange track by $index" ng-class="{current: n == thumbs.pageNum}">
-				<a ng-click="thumbs.pageNum = n">{{n + 1}}{{n == thumbs.pageNum | conditional:' of ' + thumbs.pageTotal()}}</a>
+			<li ng-repeat="n in TVthumbs.pageInationRange track by $index" ng-class="{current: n == TVthumbs.pageNum}">
+				<a ng-click="TVthumbs.pageNum = n">{{n + 1}}{{n == TVthumbs.pageNum | conditional:' of ' + TVthumbs.pageTotal()}}</a>
 			</li>
-			<li class="arrow" ng-if="thumbs.pageTotal() > 1">
-				<a ng-click="thumbs.pageNum = thumbs.pageNum + 1">&raquo;</a>
+			<li class="arrow" ng-if="TVthumbs.pageTotal() > 1">
+				<a ng-click="TVthumbs.pageNum = TVthumbs.pageNum + 1">&raquo;</a>
 			</li>
 		</ul>
 	</div>
