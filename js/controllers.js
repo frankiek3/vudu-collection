@@ -36,7 +36,8 @@ angular.module('app.controllers', []).
   filter('toExport', function() {
     return function(input) {
       var r = [[
-        'videoQuality','bestAvailVideoQuality','contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV','isDMA'
+        'videoQuality','bestAvailVideoQuality','contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','type','isUV','isMA'
+//,'tomatoMeter'
       ]];
       
       for(var i = 0; i < input.length; i++){
@@ -51,10 +52,10 @@ angular.module('app.controllers', []).
           input[i].mpaaRating,
           input[i].releaseTime,
           input[i].studio.name,
-          input[i].tomatoMeter,
+          //input[i].tomatoMeter,
           input[i].type,
           input[i].isUV,
-          input[i].isDMA
+          input[i].isMA
         ]);
       }
       
@@ -64,7 +65,8 @@ angular.module('app.controllers', []).
   filter('toTVExport', function() {
     return function(input) {
       var r = [[
-        'videoQuality','bestAvailVideoQuality','contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV'
+        'videoQuality','bestAvailVideoQuality','contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','type','isUV'
+//,'tomatoMeter'
       ]];
       
       for(var i = 0; i < input.length; i++){
@@ -79,7 +81,7 @@ angular.module('app.controllers', []).
           input[i].mpaaRating,
           input[i].releaseTime,
           input[i].studio.name,
-          input[i].tomatoMeter,
+          //input[i].tomatoMeter,
           input[i].type,
           input[i].isUV
         ]);
@@ -99,7 +101,7 @@ angular.module('app.controllers', []).
               subitem[j].mpaaRating,
               subitem[j].releaseTime,
               subitem[j].studio.name,
-              subitem[j].tomatoMeter,
+              //subitem[j].tomatoMeter,
               subitem[j].type,
               subitem[j].isUV
             ]);
@@ -135,11 +137,21 @@ angular.module('app.controllers', []).
       
       $scope.displayAs = 'list';
       $scope.$watch('displayAs', function() {
-        //$window.ga('send', 'pageview', { page: $location.path() + '-as-' + $scope.displayAs });
+        $window.ga('send', 'pageview', { page: $location.path() + '-as-' + $scope.displayAs });
       });
-      
+
+      $scope.exportDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
       $scope.query = '';
       $scope.orderProp = '';
+      $scope.orderList = [ { value: "", text: "Date Acquired"},
+        { value: "titleSort", text: "Alphabetical"},
+        { value: ["-bestAvailVideoQuality","-videoQuality"], text: "Video Quality"},
+        { value: "mpaaRating", text: "MPAA"},
+        { value: "-releaseTime", text: "Release Date"},
+        { value: "studio.name", text: "Studio"},
+        { value: "-tomatoMeter", text: "Tomato Rating"},
+        { value: "-isUV", text: "UltraVioletness"} ];
+        { value: "price", text: "Price"} ];
       
       $scope.thumbs = {
         pageNum: 0,
@@ -166,7 +178,20 @@ angular.module('app.controllers', []).
           }
         }
       };
-      
+
+      $scope.Wishthumbs = {
+        pageNum: 0,
+        pageInationRange: [],
+        pageSize: 36,
+        pageTotal: function(){
+          if($scope.filtered.wishlist.length && $scope.Wishthumbs.pageSize > 0){
+            return Math.ceil($scope.filtered.wishlist.length / $scope.Wishthumbs.pageSize);
+          } else {
+            return 1;
+          }
+        }
+      };
+
       $scope.$watch('thumbs.pageNum', function() {
         if($scope.thumbs.pageNum > $scope.thumbs.pageTotal() - 1){
           $scope.thumbs.pageNum = 0;
@@ -183,12 +208,24 @@ angular.module('app.controllers', []).
         }
       });
 
+      $scope.$watch('Wishthumbs.pageNum', function() {
+        if($scope.Wishthumbs.pageNum > $scope.Wishthumbs.pageTotal() - 1){
+          $scope.Wishthumbs.pageNum = 0;
+        } else if($scope.Wishthumbs.pageNum < 0){
+          $scope.Wishthumbs.pageNum = $scope.Wishthumbs.pageTotal() - 1;
+        }
+      });
+
       $scope.$watch('thumbs.pageTotal()', function() {
         if($scope.thumbs.pageNum > $scope.thumbs.pageTotal() - 1) $scope.thumbs.pageNum = $scope.thumbs.pageTotal() - 1;
       });
 
       $scope.$watch('TVthumbs.pageTotal()', function() {
         if($scope.TVthumbs.pageNum > $scope.TVthumbs.pageTotal() - 1) $scope.TVthumbs.pageNum = $scope.TVthumbs.pageTotal() - 1;
+      });
+
+      $scope.$watch('Wishthumbs.pageTotal()', function() {
+        if($scope.Wishthumbs.pageNum > $scope.Wishthumbs.pageTotal() - 1) $scope.Wishthumbs.pageNum = $scope.Wishthumbs.pageTotal() - 1;
       });
 
       $scope.$watch('thumbs.pageNum + thumbs.pageTotal()', function() {
@@ -220,6 +257,23 @@ angular.module('app.controllers', []).
               $scope.TVthumbs.pageInationRange.push(Math.abs(total + i) % total);
             } else {
               $scope.TVthumbs.pageInationRange.push(Math.abs(i) % total);
+            }
+          }
+        }
+      });
+
+      $scope.$watch('Wishthumbs.pageNum + Wishthumbs.pageTotal()', function() {
+        var page = +$scope.Wishthumbs.pageNum; // force int
+        var total = +$scope.Wishthumbs.pageTotal();
+        var pad = Math.min(Math.floor(total / 2), 3);
+        
+        if(total){
+          $scope.Wishthumbs.pageInationRange.length = 0;
+          for(var i = page - pad; i <= page + pad; i++){
+            if(i < 0){
+              $scope.Wishthumbs.pageInationRange.push(Math.abs(total + i) % total);
+            } else {
+              $scope.Wishthumbs.pageInationRange.push(Math.abs(i) % total);
             }
           }
         }
@@ -266,6 +320,8 @@ angular.module('app.controllers', []).
           } else {
             // progressService.reset();
             $scope.movieProgress = 100;
+
+            getWished();
           }
           progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
           progressService.type = progressService.value==100 ? 'success' : '';
@@ -282,7 +338,7 @@ angular.module('app.controllers', []).
           // console.log('getTitlesOwned:notify:');
           // console.log('data: ', data);
         });
-      }
+      };
 
 
       $scope.tvProgress = 0;
@@ -293,7 +349,7 @@ angular.module('app.controllers', []).
 
       var cntTV = 0;
       
-      var getTV = function() {
+      var initTV = function() {
         vuduFactory.getTVOwned(cntTV, $scope.contentVariants).then(function(data) {
           $scope.totalTV = data.totalCount;
           
@@ -306,12 +362,8 @@ angular.module('app.controllers', []).
           
           if(data.moreBelow && cntTV < batchLimit - 1){
             cntTV++;
-            
             $scope.tvProgress = Math.ceil($scope.tv.length * 100 / $scope.totalTV);
-            
-            getTV();
           } else {
-            // progressService.reset();
             $scope.tvProgress = 100;
           }
           progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
@@ -329,10 +381,47 @@ angular.module('app.controllers', []).
           // console.log('getTitlesOwned:notify:');
           // console.log('data: ', data);
         });
-      }
+      };
+
+      var getTV = function() {
+        vuduFactory.getTVOwned(cntTV, $scope.contentVariants).then(function(data) {
+          $scope.totalTV = data.totalCount;
+          
+          angular.forEach(data.content, function(value, key) {
+            //if(value.subitems)vuduFactory.getBundledTitles(item).then(function(data) {});
+            $scope.tv.push(value);
+          });
+
+          $scope.allTV = $scope.sum($scope.tv,'count');
+          
+          if(data.moreBelow && cntTV < batchLimit - 1){
+            cntTV++;
+            $scope.tvProgress = Math.ceil($scope.tv.length * 100 / $scope.totalTV);
+            getTV();
+          } else {
+            $scope.tvProgress = 100;
+          }
+          progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
+          progressService.type = progressService.value==100 ? 'success' : '';
+          
+        }, function(response) {
+          if(response.data.error == true && response.data.status == 'authenticationExpired'){
+            alertService.push('Authentication expired. Please sign off and sign in again.', 'warning');
+          } else if(response.data.error == true && response.data.status){
+            alertService.push('Error occurred. (' + response.data.status + ')', 'warning');
+          } else {
+            alertService.push('Unknown error occured. Please sign off and try again. If the problem persists, please wait an hour and/or let FattyMoBookyButt know in the vudu forums.', 'warning');
+          }
+        }, function(response) {
+          // console.log('getTitlesOwned:notify:');
+          // console.log('data: ', data);
+        });
+      };
+
 
       var allCnt = 0;
 var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
+
       var getContent = function() {
         vuduFactory.getContentVariantsOwned(allCnt).then(function(data) {
           //$scope.totalCount = data.totalCount;
@@ -340,7 +429,7 @@ var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
           angular.forEach(data.content, function(value, key) {
             if($scope.contentVariants[key])
             {
-              console.log("Duplicate contentId: "+key);
+//TODO              console.log("Duplicate contentId: "+key);
               if(videoQualityList[value.videoQuality] > videoQualityList[$scope.contentVariants[key].videoQuality])
               {
                 $scope.contentVariants[key] = value;
@@ -364,9 +453,8 @@ var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
             // progressService.reset();
           //  $scope.movieProgress = 100;
             
-            getTitles();
-            getTV();
-
+            initTitles();
+            initTV();
           }
           //progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
           //progressService.type = progressService.value==100 ? 'success' : '';
@@ -382,11 +470,55 @@ var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
           // console.log('getTitlesOwned:notify:');
           // console.log('data: ', data);
         });
-      }
+      };
       getContent();
 
-      
+      //$scope.wishlistProgress = 0;
+      $scope.wishlist = [];
+      $scope.filtered.wishlist = [];
+      //$scope.totalWish = 0;
+      //$scope.allWish = 0;
 
+      var cntWish = 0;
+
+      var getWished = function() {
+        vuduFactory.getWishList(cntWish, {}).then(function(data) {
+          //$scope.totalCount = data.totalCount;
+          
+          angular.forEach(data.content, function(value, key) {
+            //if(value.subitems)vuduFactory.getBundledTitles(item).then(function(data) {});
+            $scope.wishlist.push(value);
+          });
+
+          //$scope.allCount = $scope.sum($scope.titles,'count');
+          
+          if(data.moreBelow && cntWish < batchLimit - 1){
+            cntWish++;
+            
+            //$scope.movieProgress = Math.ceil($scope.titles.length * 100 / $scope.totalCount);
+            
+            getWished();
+          } else {
+            // progressService.reset();
+            //$scope.movieProgress = 100;
+          }
+          //progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
+          //progressService.type = progressService.value==100 ? 'success' : '';
+          
+        }, function(response) {
+          if(response.data.error == true && response.data.status == 'authenticationExpired'){
+            alertService.push('Authentication expired. Please sign off and sign in again.', 'warning');
+          } else if(response.data.error == true && response.data.status){
+            alertService.push('Error occurred. (' + response.data.status + ')', 'warning');
+          } else {
+            alertService.push('Unknown error occured. Please sign off and try again. If the problem persists, please wait an hour and/or let FattyMoBookyButt know in the vudu forums.', 'warning');
+          }
+        }, function(response) {
+          // console.log('getWishList:notify:');
+          // console.log('data: ', data);
+        });
+      };
+//getWished();
 
       // $scope.uvvuLink = function(id) {
       //   window.open('https://www.uvvu.com/en/us/library/' + slug); // need access to uvvu (have urn)
@@ -397,35 +529,41 @@ var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
       }
     }
   ]).
-  controller('TitleDetailCtrl', ['$scope', '$routeParams',
-    function ($scope, $routeParams) {
-      // console.log('TitleDetailCtrl: $routeParams: ', $routeParams);
-      $scope.id = $routeParams.id;
-    }]).
-  controller('UserCtrl', ['$scope', '$location', 'alertService', 'vuduFactory',
-    function ($scope, $location, alertService, vuduFactory) {
-      $scope.error = null;
-      $scope.user = null;
-      
-      $scope.logIn = function() {
-        alertService.clear();
-        $scope.error = null;
-        
-        vuduFactory.signIn($scope.user.userName, $scope.user.password).then(function(response) {
-          
-          $location.url('/titles');
-        }, function(response) {
-          if(response.data && response.data.error){
-            $scope.error = {
-              message: response.data.message,
-              status: response.data.status
-            }
-          } else {
-            $scope.error = {
-              message: 'Error occurred',
-              status: 'unknownError'
-            }
-          }
-        });
-      }
-    }]);
+
+	controller('TitleDetailCtrl', ['$scope', '$routeParams',
+		function ($scope, $routeParams) {
+			// console.log('TitleDetailCtrl: $routeParams: ', $routeParams);
+			$scope.id = $routeParams.id;
+	}]).
+
+	controller('UserCtrl', ['$scope', '$location', 'alertService', 'vuduFactory',
+	function ($scope, $location, alertService, vuduFactory) {
+	$scope.error = null;
+	$scope.user = null;
+
+	$scope.logIn = function() {
+	alertService.clear();
+	$scope.error = null;
+
+	if(window.cf && window.cf.cfsubmit)
+	{
+		window.cf.cfsubmit();
+	}
+
+	vuduFactory.signIn($scope.user.userName, $scope.user.password, $scope.user.logintype, document.getElementById('sensor_data').value, $scope.user.userId, $scope.user.sessionKey).then(function(response){
+			$location.url('/titles');
+		}, function(response) {
+			if(response.data && response.data.error){
+				$scope.error = {
+					message: response.data.message,
+					status: response.data.status
+				};
+			} else {
+				$scope.error = {
+					message: 'Error occurred',
+					status: 'unknownError'
+				};
+			}
+		});
+	}
+}]);

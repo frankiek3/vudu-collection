@@ -65,7 +65,6 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
       }
     });
     $rootScope.$on('$locationChangeSuccess', function(event) {
-      //$window.ga('send', 'pageview', { page: $location.path() });
+      $window.ga('send', 'pageview', { page: $location.path() });
     });
   });
-

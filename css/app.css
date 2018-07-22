@@ -41,9 +41,9 @@ td.is-uv {
   background-repeat: no-repeat;
 }
 
-td.dma { text-indent: -9999px; }
-td.is-dma {
-  background-image: url(../img/dma_logo_27x27.png);
+td.ma { text-indent: -9999px; }
+td.is-ma {
+  background-image: url(../img/ma-logo-27x27.png);
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -82,21 +82,31 @@ td.is-dma {
     display: inline-block;
 }
 
-.uv-thumb:before {
+.uv-thumb.ma-thumb:before {
     display: inline-block;
     position: absolute;
     content: '';
-    background: url(../img/uv-logo-pc-26x27.png) no-repeat bottom 2px right 2px;;
+    background: url(../img/ma-logo-27x27.png) no-repeat bottom 2px right 2px, url(../img/uv-logo-pc-26x27.png) no-repeat bottom 2px left 2px;
     width: 100%;
     height: 100%;
     pointer-events: none;
 }
 
-.dma-thumb:before {
+.uv-thumb:before {
     display: inline-block;
     position: absolute;
     content: '';
-    background: url(../img/dma_logo_27x27.png) no-repeat bottom 2px right 2px;;
+    background: url(../img/uv-logo-pc-26x27.png) no-repeat bottom 2px left 2px;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.ma-thumb:before {
+    display: inline-block;
+    position: absolute;
+    content: '';
+    background: url(../img/ma-logo-27x27.png) no-repeat bottom 2px right 2px;
     width: 100%;
     height: 100%;
     pointer-events: none;
@@ -128,4 +138,26 @@ button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[dis
 
 .th {
   border-width: 0;
+}
+
+.adsbygoogle-horizontal {
+  display:block;
+}
+
+.xadslot_1 {
+  display:inline-block;
+  width: 935px;
+  height: 640px;
+}
+
+.adsbygoogle-product {
+  display:inline-block;
+  width: 700px;
+  height: 120px;
+}
+
+.adsbygoogle-vertical {
+  display:inline-block;
+  width: 160px;
+  height: 665px;
 }

@@ -1,7 +1,7 @@
 <div class="columns">
 	<div class="row">
 		<div class="small-12 medium-6 medium-offset-3 columns">
-			<a class="success button radius expand" target="_blank" download="vudu-collection-movies.csv" ng-href="{{ filtered.titles = (titles | filter:{title: query} | orderBy:orderProp) | toExport | toCsv | toDownload }}">Download CSV</a>
+			<a class="success button radius expand" target="_blank" download="vudu-collection-movies-{{exportDate}}.csv" ng-href="{{ filtered.titles = (titles | filter:{title: query} | orderBy:orderProp) | toExport | toCsv | toDownload }}">Download CSV</a>
 		</div>
 	</div>
 

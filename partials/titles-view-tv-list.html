@@ -2,7 +2,7 @@
 	<table>
 		<thead>
 			<tr>
-				<th width="8%">Quality</th>
+				<th width="8%" aria-label="Owned / Available">Quality</th>
 				<th width="8%">ID</th>
 				<th width="15%" ng-if="orderProp == 'studio.name'">Studio</th>
 				<th>Title</th>
@@ -18,9 +18,9 @@
 				<td class="center">{{title.videoQuality}} / {{title.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(title.contentId)">{{title.contentId}}</a></td>
 				<td ng-if="orderProp == 'studio.name'">{{title.studio.name}}</td>
-				<td ng-if="title.subitems"><a class="tiny button secondary expand radius" ng-click="title.expanded = !title.expanded">{{title.title}}<br /></a></td>
-				<td ng-if="!title.subitems">{{title.title}}<br /></td>
-				<td>{{title.releaseYear}}</td>
+				<td ng-if="title.subitems"><a class="tiny button secondary expand radius" ng-click="title.expanded = !title.expanded">{{title.title}}</a></td>
+				<td ng-if="!title.subitems">{{title.title}}</td>
+				<td class="center">{{title.releaseYear}}</td>
 				<!-- <td>{{title.bestAvailVideoQuality | uppercase}}</td> -->
 				<td ng-if="orderProp == 'mpaaRating'">{{title.mpaaRating | uppercase}}</td>
 				<td class="center">{{title.tomatoMeter}}</td>
@@ -32,9 +32,9 @@
 				<td class="center">{{subtitle.videoQuality}} / {{subtitle.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(subtitle.contentId)">{{subtitle.contentId}}</a></td>
 				<td ng-if="orderProp == 'studio.name'">{{subtitle.studio.name}}</td>
-				<td ng-if="subtitle.subitems"><a class="tiny button info expand radius" ng-click="subtitle.expanded = !subtitle.expanded">{{subtitle.title}}<br /></a></td>
-				<td ng-if="!subtitle.subitems">{{subtitle.title}}<br /></td>
-				<td>{{subtitle.releaseYear}}</td>
+				<td ng-if="subtitle.subitems"><a class="tiny button info expand radius" ng-click="subtitle.expanded = !subtitle.expanded">{{subtitle.title}}</a></td>
+				<td ng-if="!subtitle.subitems">{{subtitle.title}}</td>
+				<td class="center">{{subtitle.releaseYear}}</td>
 				<!-- <td>{{subtitle.bestAvailVideoQuality | uppercase}}</td> -->
 				<td ng-if="orderProp == 'mpaaRating'">{{subtitle.mpaaRating | uppercase}}</td>
 				<td class="center">{{subtitle.tomatoMeter}}</td>
@@ -46,8 +46,8 @@
 				<td class="center">{{episode.videoQuality}} / {{episode.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(episode.contentId)">{{episode.contentId}}</a></td>
 				<td ng-if="orderProp == 'studio.name'">{{episode.studio.name}}</td>
-				<td>{{episode.title}}<br /></td>
-				<td>{{episode.releaseYear}}</td>
+				<td>{{episode.title}}</td>
+				<td class="center">{{episode.releaseYear}}</td>
 				<!-- <td>{{episode.bestAvailVideoQuality | uppercase}}</td> -->
 				<td ng-if="orderProp == 'mpaaRating'">{{episode.mpaaRating | uppercase}}</td>
 				<td class="center">{{episode.tomatoMeter}}</td>

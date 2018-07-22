@@ -1,13 +1,10 @@
 <div class="row filter-row">
 	<div class="medium-5 columns">
 		<div class="row collapse">
-			<div class="small-9 medium-8 columns">
-				<span class="prefix" ng-if="!query.length">{{filtered.titles.length && filtered.titles.length != totalCount | conditional:filtered.titles.length+' ('+sum(filtered.titles,'count')+') of '}}{{totalCount}} ({{allCount}})</span>
-				<a class="button active prefix" ng-if="query.length">{{filtered.titles.length}} ({{sum(filtered.titles,'count')}}) of {{totalCount}} ({{allCount}})</a>
-		<!--
-		<div class="count">
-			<span class="secondary round label" ng-class="{secondary: !query.length}">{{filtered.titles.length && filtered.titles.length != totalCount | conditional:filtered.titles.length + ' of '}}{{totalCount}}</span>
-		</div> -->
+			<div class="small-9 medium-9 columns">
+				<span class="prefix" ng-if="!query.length" aria-label="Vudu's Count (Movie+Featurette Count)">{{filtered.titles.length && filtered.titles.length != totalCount | conditional:filtered.titles.length+' ('+sum(filtered.titles,'count')+') of '}}{{totalCount}} ({{allCount}})</span>
+				<a class="button active prefix" ng-if="query.length" aria-label="Vudu's Count (Movie+Featurette Count)">{{filtered.titles.length}} ({{sum(filtered.titles,'count')}}) of {{totalCount}} ({{allCount}})</a>
+		<!-- <div class="count"></div> -->
 			</div>
 		</div>
 	</div>
@@ -18,10 +15,11 @@
 
 	<div class="medium-4 columns">
 		<div class="button-bar">
-			<ul class="layout-button-group button-group radius even-3">
+			<ul class="layout-button-group button-group radius even-4">
 				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'thumbs'"><i class="fa fa-th fa-lg"></i><!-- thumbs --></button></li>
 				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'list'"><i class="fa fa-list fa-lg"></i><!-- list --></button></li>
 				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'export'"><i class="fa fa-download fa-lg"></i><!-- csv --></button></li>
+				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'import'"><i class="fa fa-upload fa-lg"></i><!-- csv --></button></li>
 			</ul>
 		</div>
 	</div>
@@ -30,9 +28,9 @@
 <div class="row filter-row">
 	<div class="medium-5 columns">
 		<div class="row collapse">
-			<div class="small-9 medium-8 columns">
+			<div class="small-9 medium-9 columns">
 				<span class="prefix" ng-if="!query.length">{{filtered.tv.length && filtered.tv.length != totalTV | conditional:filtered.tv.length+' ('+sum(filtered.tv,'count')+') of '}}{{totalTV}} ({{allTV}})</span>
-				<a class="button active prefix" ng-if="query.length">{{filtered.tv.length}} ({{sum(filtered.tv,'count')}}) of {{totalTV}} ({{allTV}})</a>
+				<a class="button active prefix" ng-if="query.length">{{filtered.tv.length}} ({{sum(filtered.tv,'count')}}) of {{totalTV}} ({{allTV}})</a><!-- Series Seasons Episodes -->
 			</div>
 		</div>
 	</div>
@@ -43,10 +41,11 @@
 
 	<div class="medium-4 columns">
 		<div class="button-bar">
-			<ul class="layout-button-group button-group radius even-3">
+			<ul class="layout-button-group button-group radius even-4">
 				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'tvthumbs'"><i class="fa fa-th fa-lg"></i><!-- thumbs --></button></li>
 				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'tvlist'"><i class="fa fa-list fa-lg"></i><!-- list --></button></li>
 				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'tvexport'"><i class="fa fa-download fa-lg"></i><!-- csv --></button></li>
+				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'tvimport'"><i class="fa fa-upload fa-lg"></i><!-- csv --></button></li>
 			</ul>
 		</div>
 	</div>
@@ -57,27 +56,26 @@
 <div class="row filter-row">
 	<div class="medium-4 columns">
 		<div class="row collapse">
-			<div class="small-9 medium-8 columns">
+			<div class="small-9 medium-9 columns">
 				<input type="text" placeholder="Filter" ng-model="query" clear-with-esc>
 			</div>
 		</div>
 	</div>
 
+	<div class="medium-3 columns">
+		<div class="button-bar">
+			<ul class="layout-button-group button-group radius even-2">
+				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'wishthumbs'"><i class="fa fa-th fa-lg"></i><!-- thumbs --></button></li>
+				<li><button type="button" class="tiny button" ng-model="displayAs" btn-radio="'wishlist'"><i class="fa fa-list fa-lg"></i><!-- list --></button></li>
+			</ul>
+		</div>
+	</div>
+
 	<div class="medium-4 columns">
-		<select ng-model="orderProp">
-			<option value="">Date Acquired</option>
-			<option value="titleSort">Alphabetical</option>
-			<option value="-videoQuality">Video Quality</option>
-			<option value="mpaaRating">MPAA</option>
-			<option value="-releaseTime">Release Date</option>
-			<option value="studio.name">Studio</option>
-			<option value="-tomatoMeter">Tomato Rating</option>
-			<option value="-isUV">UltraVioletness</option>
-			<!-- <option value="type">type</option> -->
-		</select>
+		<select ng-model="orderProp" ng-options="o.value as o.text for o in orderList"></select>
 	</div>
 </div>
 
 
-<div class="row content-row" ng-include="displayAs == 'thumbs' && 'partials/titles-view-thumbs.html' || displayAs == 'list' && 'partials/titles-view-list.html' || displayAs == 'export' && 'partials/titles-view-export.html' || displayAs == 'tvthumbs' && 'partials/titles-view-tv-thumbs.html' || displayAs == 'tvlist' && 'partials/titles-view-tv-list.html' || 'partials/titles-view-tv-export.html'"></div>
+<div class="row content-row" ng-include="displayAs == 'thumbs' && 'partials/titles-view-thumbs.html' || displayAs == 'list' && 'partials/titles-view-list.html' || displayAs == 'export' && 'partials/titles-view-export.html' || displayAs == 'import' && 'partials/titles-view-import.html' || displayAs == 'tvthumbs' && 'partials/titles-view-tv-thumbs.html' || displayAs == 'tvlist' && 'partials/titles-view-tv-list.html' || displayAs == 'tvexport' && 'partials/titles-view-tv-export.html' || displayAs == 'tvimport' && 'partials/titles-view-tv-import.html' || displayAs == 'wishthumbs' && 'partials/titles-view-wish-thumbs.html' || displayAs == 'wishlist' && 'partials/titles-view-wish-list.html'"></div>
 

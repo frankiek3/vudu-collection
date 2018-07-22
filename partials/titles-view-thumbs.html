@@ -2,14 +2,14 @@
 	<ul class="small-block-grid-5 medium-block-grid-7 large-block-grid-9">
 		<li ng-repeat-start="title in filtered.titles = (titles | filter:{title: query} | orderBy:orderProp) | pageSlice:thumbs.pageNum:thumbs.pageSize">
 			<div class="clearfix img-wrap">
-				<div class="left has-tip" tooltip="{{title.title}}" tooltip-popup-delay="500" tooltip-placement="bottom" ng-class="{'uv-thumb': title.isUV, 'dma-thumb': title.isDMA}">
+				<div class="left has-tip" tooltip="{{title.title}}" tooltip-popup-delay="500" tooltip-placement="bottom" ng-class="{'uv-thumb': title.isUV, 'ma-thumb': title.isMA}">
 					<a ng-click="vuduLink(title.contentId)"><img ng-src="{{title.posterUrl}}" class="th"></a>
 				</div>
 			</div>
 		</li>
 		<li ng-if="title.type=='bundle' && !title.collapsed" ng-repeat-end="" ng-repeat="subtitle in title.subitems">
 			<div class="clearfix img-wrap">
-				<div class="left has-tip" tooltip="{{subtitle.title}}" tooltip-popup-delay="500" tooltip-placement="bottom" ng-class="{'uv-thumb': subtitle.isUV, 'dma-thumb': subtitle.isDMA}">
+				<div class="left has-tip" tooltip="{{subtitle.title}}" tooltip-popup-delay="500" tooltip-placement="bottom" ng-class="{'uv-thumb': subtitle.isUV, 'ma-thumb': subtitle.isMA}">
 					<a ng-click="vuduLink(subtitle.contentId)"><img ng-src="{{subtitle.posterUrl}}" class="th"></a>
 				</div>
 			</div>

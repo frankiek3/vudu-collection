@@ -2,6 +2,7 @@
 	<table>
 		<thead>
 			<tr>
+				<th width="8%" aria-label="Price">Price</th>
 				<th width="8%" aria-label="Owned / Available">Quality</th>
 				<th width="8%">ID</th>
 				<th width="15%" ng-if="orderProp == 'studio.name'">Studio</th>
@@ -9,40 +10,54 @@
 				<th width="8%">Year</th>
 				<th width="8%" ng-if="orderProp == 'mpaaRating'">MPAA</th>
 				<th width="8%">Tomato</th>
-				<!-- <th width="8%">Type</th> -->
 				<th width="8%">UV</th>
 				<th width="8%">MA</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat-start="title in filtered.titles = (titles | filter:{title: query} | orderBy:orderProp)">
+			<tr ng-repeat-start="title in filtered.wishlist = (wishlist | filter:{title: query} | orderBy:orderProp)">
+				<td>{{title.price}}</td>
 				<td class="center">{{title.videoQuality}} / {{title.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(title.contentId)">{{title.contentId}}</a></td>
 				<td ng-if="orderProp == 'studio.name'">{{title.studio.name}}</td>
-				<td ng-if="title.subitems"><a class="tiny button secondary expand radius" ng-click="title.collapsed = !title.collapsed">{{title.title}}</a></td>
-				<td ng-if="!title.subitems">{{title.title}}</td>
+				<td ng-if="title.subitems.length"><a class="tiny button secondary expand radius" ng-click="title.expanded = !title.expanded">{{title.title}}</a></td>
+				<td ng-if="!title.subitems.length">{{title.title}}</td>
 				<td class="center">{{title.releaseYear}}</td>
 				<!-- <td>{{title.bestAvailVideoQuality | uppercase}}</td> -->
 				<td ng-if="orderProp == 'mpaaRating'">{{title.mpaaRating | uppercase}}</td>
 				<td class="center">{{title.tomatoMeter}}</td>
-				<!-- <td>{{title.type}}</td> -->
 				<td class="uv center" ng-class="{'is-uv': title.isUV}">{{title.isUV | conditional:'Yes':'No'}}</td>
 				<td class="ma center" ng-class="{'is-ma': title.isMA}">{{title.isMA | conditional:'Yes':'No'}}</td>
 			</tr>
-			<tr ng-if="title.type=='bundle' && !title.collapsed" ng-repeat-end="" ng-repeat="subtitle in title.subitems">
+			<tr ng-if="(title.type=='bundle' || title.type=='season' || title.type=='series') && title.expanded" ng-repeat-start="subtitle in title.subitems">
+				<td>{{subtitle.price}}</td>
 				<!-- <td colspan="{{col.subcolumns.length}}">{{subtitle.details}}</td> -->
 				<td class="center">{{subtitle.videoQuality}} / {{subtitle.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(subtitle.contentId)">{{subtitle.contentId}}</a></td>
 				<td ng-if="orderProp == 'studio.name'">{{subtitle.studio.name}}</td>
-				<td>{{subtitle.title}}</td>
+				<td ng-if="subtitle.subitems.length"><a class="tiny button info expand radius" ng-click="subtitle.expanded = !subtitle.expanded">{{subtitle.title}}</a></td>
+				<td ng-if="!subtitle.subitems.length">{{subtitle.title}}</td>
 				<td class="center">{{subtitle.releaseYear}}</td>
 				<!-- <td>{{subtitle.bestAvailVideoQuality | uppercase}}</td> -->
 				<td ng-if="orderProp == 'mpaaRating'">{{subtitle.mpaaRating | uppercase}}</td>
 				<td class="center">{{subtitle.tomatoMeter}}</td>
-				<!-- <td>{{subtitle.type}}</td> -->
 				<td class="uv center" ng-class="{'is-uv': subtitle.isUV}">{{subtitle.isUV | conditional:'Yes':'No'}}</td>
+			</tr>
+			<tr ng-if="subtitle.type=='season' && subtitle.expanded && title.expanded" ng-repeat-end="" ng-repeat="episode in subtitle.subitems">
+				<td>{{episode.price}}</td>
+				<!-- <td colspan="{{col.subcolumns.length}}">{{episode.details}}</td> -->
+				<td class="center">{{episode.videoQuality}} / {{episode.bestAvailVideoQuality}}</td>
+				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(episode.contentId)">{{episode.contentId}}</a></td>
+				<td ng-if="orderProp == 'studio.name'">{{episode.studio.name}}</td>
+				<td>{{episode.title}}</td>
+				<td class="center">{{episode.releaseYear}}</td>
+				<!-- <td>{{episode.bestAvailVideoQuality | uppercase}}</td> -->
+				<td ng-if="orderProp == 'mpaaRating'">{{episode.mpaaRating | uppercase}}</td>
+				<td class="center">{{episode.tomatoMeter}}</td>
+				<td class="uv center" ng-class="{'is-uv': episode.isUV}">{{episode.isUV | conditional:'Yes':'No'}}</td>
 				<td class="ma center" ng-class="{'is-ma': subtitle.isMA}">{{subtitle.isMA | conditional:'Yes':'No'}}</td>
 			</tr>
+			<tr ng-repeat-end="" ng-if="0"></tr>
 		</tbody>
 	</table>
 </div>

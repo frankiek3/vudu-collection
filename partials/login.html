@@ -21,7 +21,42 @@
 						<!-- <small class="error" ng-show="false">Invalid entry</small> -->
 					</div>
 				</div>
-				
+
+				<div class="row">
+					<div class="columns">
+						<label>
+							<input name="logintype" type="radio" value="vudu" ng-model="user.logintype" ng-checked="true"/> Vudu
+						</label>
+					</div>
+					<div class="columns">
+						<label>
+							<input name="logintype" type="radio" value="wmt" ng-model="user.logintype"/> Walmart
+						</label>
+					</div>
+				</div>
+
+				<div class="row">
+					<a class="tiny button secondary expand radius" ng-click="loginextra = !loginextra">Manually Enter Login</a>
+				</div>
+
+				<div class="row" ng-if="loginextra">
+					<div class="columns">
+						<label>
+							<input name="userId" type="text" placeholder="userId" ng-model="user.userId">
+						</label>
+					</div>
+				</div>
+
+
+				<div class="row" ng-if="loginextra">
+					<div class="columns">
+						<label>
+							<input name="sessionKey" type="text" placeholder="sessionKey" ng-model="user.sessionKey">
+						</label>
+					</div>
+				</div>
+
+				<input type="hidden" id="sensor_data" name="sensor_data">
 				<button type="submit" class="button radius expand" ng-disabled="userForm.$invalid">Sign in</button>
 				<small class="error" ng-if="error">{{error.message}}</small>
 			</fieldset>
