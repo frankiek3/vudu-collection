@@ -35,9 +35,8 @@ angular.module('app.controllers', []).
   ]).
   filter('toExport', function() {
     return function(input) {
-      var r = [[
-        'videoQuality','bestAvailVideoQuality','contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','type','isUV','isMA'
-//,'tomatoMeter'
+      var r = [[ 'videoQuality','bestAvailVideoQuality','contentId','title','country','language',
+        'lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV','isMA'
       ]];
       
       for(var i = 0; i < input.length; i++){
@@ -52,7 +51,7 @@ angular.module('app.controllers', []).
           input[i].mpaaRating,
           input[i].releaseTime,
           input[i].studio.name,
-          //input[i].tomatoMeter,
+          input[i].tomatoMeter,
           input[i].type,
           input[i].isUV,
           input[i].isMA
@@ -64,9 +63,8 @@ angular.module('app.controllers', []).
   }).
   filter('toTVExport', function() {
     return function(input) {
-      var r = [[
-        'videoQuality','bestAvailVideoQuality','contentId','title','country','language','lengthSeconds','mpaaRating','releaseTime','studioName','type','isUV'
-//,'tomatoMeter'
+      var r = [[ 'videoQuality','bestAvailVideoQuality','contentId','title','country','language',
+        'lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV'
       ]];
       
       for(var i = 0; i < input.length; i++){
@@ -81,7 +79,7 @@ angular.module('app.controllers', []).
           input[i].mpaaRating,
           input[i].releaseTime,
           input[i].studio.name,
-          //input[i].tomatoMeter,
+          input[i].tomatoMeter,
           input[i].type,
           input[i].isUV
         ]);
@@ -101,7 +99,7 @@ angular.module('app.controllers', []).
               subitem[j].mpaaRating,
               subitem[j].releaseTime,
               subitem[j].studio.name,
-              //subitem[j].tomatoMeter,
+              subitem[j].tomatoMeter,
               subitem[j].type,
               subitem[j].isUV
             ]);
@@ -125,7 +123,7 @@ angular.module('app.controllers', []).
   }).
   filter('toDownload', function() {
     return function(input) {
-      return 'data:attachment/csv,' + encodeURI(input);
+      return 'data:attachment/csv,' + "\uFEFF" + encodeURI(input);
     };
   }).
   controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeout', '$window', 'alertService', 'progressService', 'vuduFactory', 
@@ -150,7 +148,7 @@ angular.module('app.controllers', []).
         { value: "-releaseTime", text: "Release Date"},
         { value: "studio.name", text: "Studio"},
         { value: "-tomatoMeter", text: "Tomato Rating"},
-        { value: "-isUV", text: "UltraVioletness"} ];
+        { value: "-isUV", text: "UltraVioletness"},
         { value: "price", text: "Price"} ];
       
       $scope.thumbs = {
@@ -453,8 +451,8 @@ var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
             // progressService.reset();
           //  $scope.movieProgress = 100;
             
-            initTitles();
-            initTV();
+            getTitles();
+            getTV();
           }
           //progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
           //progressService.type = progressService.value==100 ? 'success' : '';

@@ -11,6 +11,10 @@
 
 	<div class="medium-1 columns">
 		<div class="movies-img"></div>
+		<div class="button-bar">
+<a class="tiny button secondary expand radius" ng-click="angular.forEach(titles, function(value, key){ if(value.type=='bundle'){value.collapsed = 0;} })" alt="Expand All Movie Bundles">+</a>
+<a class="tiny button secondary expand radius" ng-click="angular.forEach(titles, function(value, key){ if(value.type=='bundle'){value.collapsed = 1;} })" alt="Collapse All Movie Bundles">-</a>
+		</div>
 	</div>
 
 	<div class="medium-4 columns">
@@ -37,6 +41,9 @@
 
 	<div class="medium-1 columns">
 		<div class="tv-img"></div>
+		<div class="button-bar">
+
+		</div>
 	</div>
 
 	<div class="medium-4 columns">
