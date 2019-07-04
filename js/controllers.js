@@ -123,7 +123,7 @@ angular.module('app.controllers', []).
   }).
   filter('toDownload', function() {
     return function(input) {
-      return 'data:attachment/csv;charset=utf-8,%EF%BB%BF' + encodeURI(input);
+      return 'data:attachment/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(input);
     };
   }).
   controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeout', '$window', 'alertService', 'progressService', 'vuduFactory', 

@@ -29,7 +29,7 @@
 				<td class="uv center" ng-class="{'is-uv': title.isUV}">{{title.isUV | conditional:'Yes':'No'}}</td>
 				<td class="ma center" ng-class="{'is-ma': title.isMA}">{{title.isMA | conditional:'Yes':'No'}}</td>
 			</tr>
-			<tr ng-if="title.type=='bundle' && !title.collapsed" ng-repeat-end="" ng-repeat="subtitle in title.subitems">
+			<tr ng-if="title.type=='bundle' && !(title.collapsed || titles.allCollapsed)" ng-repeat-end="" ng-repeat="subtitle in title.subitems">
 				<!-- <td colspan="{{col.subcolumns.length}}">{{subtitle.details}}</td> -->
 				<td class="center">{{subtitle.videoQuality}} / {{subtitle.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(subtitle.contentId)">{{subtitle.contentId}}</a></td>
