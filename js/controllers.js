@@ -136,6 +136,7 @@ angular.module('app.controllers', []).
       $scope.displayAs = 'list';
       $scope.$watch('displayAs', function() {
         $window.ga('send', 'pageview', { page: $location.path() + '-as-' + $scope.displayAs });
+        //if($scope.displayAs=='tv') getTV();
       });
 
       $scope.exportDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
@@ -286,7 +287,7 @@ angular.module('app.controllers', []).
           }, 0);
       };
       
-      var batchLimit = 100;
+      var batchLimit = 1000;
 
       $scope.contentVariants = {};
 
