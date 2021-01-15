@@ -120,32 +120,6 @@ angular.module('app.controllers', []).
       return 'data:attachment/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(input);
     };
   }).
-  filter('fromFile', function() {
-    return function(input) {
-      return decodeURIComponent(input);
-    };
-  }).
-  filter('fromCsv', function() {
-    return function(input) {
-      var rows = input.split('\r\n');
-      for(var i = 0; i < rows.length; i++){
-        rows[i] = rows[i].split(',');
-      }
-      return rows;
-    };
-  }).
-  filter('fromImport', function() {
-    return function(input) {
-      var rows = [];
-      for(var i = 1; i < input.length; i++){
-        rows.push(input[i].reduce(function(obj, str, ind) {
-          obj[input[0][ind]] = str;
-          return obj;
-        }, {}));
-      }
-      return rows;
-    };
-  }).
   controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeout', '$window', 'alertService', 'progressService', 'vuduFactory', 
     function ($scope, $filter, $http, $location, $timeout, $window, alertService, progressService, vuduFactory) {
       // console.log('');
@@ -186,7 +160,7 @@ angular.module('app.controllers', []).
         angular.forEach(filtered.titles, function(value, key) {
           compared[value.contentId] = value.videoQuality;
         });
-        angular.forEach(filtered.titlesImport, function(value, key) {
+        angular.forEach(filtered.importTitles, function(value, key) {
           //Missing
           if(compared[value.contentId] === undefined)
           {
@@ -363,7 +337,7 @@ angular.module('app.controllers', []).
 
       $scope.movieProgress = 0;
       $scope.titles = [];
-      $scope.filtered = { titles: [], titlesImport: [] };
+      $scope.filtered = { titles: [], importTitles: [] };
       $scope.totalCount = 0;
       $scope.allCount = 0;
 
