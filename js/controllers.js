@@ -136,6 +136,7 @@ angular.module('app.controllers', []).
       var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
       $scope.importTitles = [];
       $scope.handleFileInput = function(files) {
+      	alert('scope.handleFileInput');
         var reader = new FileReader();
         reader.onload = function(){
           var rows = reader.result.split('\r\n');
@@ -153,6 +154,7 @@ angular.module('app.controllers', []).
       };
       $scope.changes = {missing: '', downgrades: ''};//, added: {}, upgrades: {}};
       $scope.compareFile = function() {
+      	alert('scope.compareFile');
         var missing = {};
         var downgrades = {};
         //added: {}, upgrades: {}};
