@@ -2,7 +2,7 @@
 <div class="columns">
 	<div class="row">
 	    <div class="small-12 medium-6 medium-offset-3 columns">
-        <input type="file" accept=".csv" ng-file-model="importFile"/>
+        <input type="file" accept=".csv" (change)="handleFileInput($event.target.files)">/>
         <button ng-click="compareFile()">Compare</button>
 	 </div>
 	</div>
@@ -11,5 +11,5 @@
         Missing: {{changes.missing}}</div>
         <div>Downgraded: {{changes.downgrades}}</div>
 	</div>
-	<textarea style="width: 100%; height: 25rem;">{{ filtered.titlesImport = (importFile | fromFile | fromCsv | fromImport | (filter:{title: query} | orderBy:orderProp)) }}</textarea>	
+	<textarea style="width: 100%; height: 25rem;">{{ filtered.titlesImport = (importFile | fromCsv | fromImport | (filter:{title: query} | orderBy:orderProp)) | toExport | toCsv }}</textarea>	
 </div>

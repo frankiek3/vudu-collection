@@ -161,9 +161,15 @@ angular.module('app.controllers', []).
 
       var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
       $scope.importFile = '';
+      $scope.handleFileInput = function(files) {
+        var reader = new FileReader();
+        reader.onload = function(){
+          $scope.importFile = reader.result;
+        };
+        reader.readAsText(files[0]);
+      };
       $scope.changes = {missing: '', downgrades: ''};//, added: {}, upgrades: {}};
       $scope.compareFile = function() {
-        alert('compare');
         var missing = {};
         var downgrades = {};
         //added: {}, upgrades: {}};
