@@ -38,7 +38,6 @@ angular.module('app.controllers', []).
       var r = [[ 'videoQuality','bestAvailVideoQuality','contentId','title','country','language',
         'lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV','isMA'
       ]];
-      
       for(var i = 0; i < input.length; i++){
         r.push([
           input[i].videoQuality,
@@ -57,7 +56,6 @@ angular.module('app.controllers', []).
           input[i].isMA
         ]);
       }
-      
       return r;
     };
   }).
@@ -66,7 +64,6 @@ angular.module('app.controllers', []).
       var r = [[ 'videoQuality','bestAvailVideoQuality','contentId','title','country','language',
         'lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV'
       ]];
-      
       for(var i = 0; i < input.length; i++){
         r.push([
           input[i].videoQuality,
@@ -106,24 +103,47 @@ angular.module('app.controllers', []).
           }
         }
       }
-      
       return r;
     };
   }).
   filter('toCsv', function() {
     return function(input) {
       var rows = [];
-
       for(var i = 0; i < input.length; i++){
           rows.push(input[i].join(','));
       }
-
       return rows.join('\r\n');
     };
   }).
   filter('toDownload', function() {
     return function(input) {
       return 'data:attachment/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(input);
+    };
+  }).
+  filter('fromFile', function() {
+    return function(input) {
+      return decodeURIComponent(input);
+    };
+  }).
+  filter('fromCsv', function() {
+    return function(input) {
+      var rows = input.split('\r\n');
+      for(var i = 0; i < rows.length; i++){
+        rows[i] = rows[i].split(',');
+      }
+      return rows;
+    };
+  }).
+  filter('fromImport', function() {
+    return function(input) {
+      var rows = [];
+      for(var i = 1; i < input.length; i++){
+        rows.push(input[i].reduce(function(obj, str, ind) {
+          obj[input[0][ind]] = str;
+          return obj;
+        }, {}));
+      }
+      return rows;
     };
   }).
   controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeout', '$window', 'alertService', 'progressService', 'vuduFactory', 
@@ -138,6 +158,40 @@ angular.module('app.controllers', []).
         $window.ga('send', 'pageview', { page: $location.path() + '-as-' + $scope.displayAs });
         //if($scope.displayAs=='tv') getTV();
       });
+
+      var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
+      $scope.changes = {missing: '', downgrades: ''};//, added: {}, upgrades: {}};
+      $scope.compareFile = function() {
+        alert('compare');
+        var missing: {}
+        var downgrades: {};
+        //added: {}, upgrades: {}};
+        var compared = {};
+        angular.forEach(filtered.titles, function(value, key) {
+          compared[value.contentId] = value.videoQuality;
+        });
+        angular.forEach(filtered.titlesImport, function(value, key) {
+          //Missing
+          if(compared[value.contentId] === undefined)
+          {
+            missing[value.contentId] = value.videoQuality;
+          }
+          //Exists
+          else
+          {
+            //Downgraded
+            if(videoQualityList[compared[value.contentId]] < videoQualityList[value.videoQuality])
+            {
+              changes.downgrades[value.contentId] = compared[value.contentId];
+            }
+            //Upgraded
+            //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
+            //{}
+            delete compared[value.contentId];
+          }
+        });
+        $scope.changes = {missing: Object.keys(missing).join(', '), downgrades: Object.keys(downgrades).join(', ')};
+      };
 
       $scope.exportDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
       $scope.query = '';
@@ -419,7 +473,6 @@ angular.module('app.controllers', []).
 
 
       var allCnt = 0;
-var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
 
       var getContent = function() {
         vuduFactory.getContentVariantsOwned(allCnt).then(function(data) {
