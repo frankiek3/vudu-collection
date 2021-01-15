@@ -160,11 +160,20 @@ angular.module('app.controllers', []).
       });
 
       var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
-      $scope.importFile = '';
+      $scope.importTitles = [];
       $scope.handleFileInput = function(files) {
         var reader = new FileReader();
         reader.onload = function(){
-          $scope.importFile = reader.result;
+          var rows = reader.result.split('\r\n');
+          rows[0] = rows[0].split(',');
+          for(var i = 1; i < rows.length; i++){
+            rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
+              obj[rows[0][ind]] = str;
+              return obj;
+            }, {});
+          }
+          rows.shift;
+          $scope.importTitles = rows;
         };
         reader.readAsText(files[0]);
       };
