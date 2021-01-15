@@ -163,8 +163,8 @@ angular.module('app.controllers', []).
       $scope.changes = {missing: '', downgrades: ''};//, added: {}, upgrades: {}};
       $scope.compareFile = function() {
         alert('compare');
-        var missing: {};
-        var downgrades: {};
+        var missing = {};
+        var downgrades = {};
         //added: {}, upgrades: {}};
         var compared = {};
         angular.forEach(filtered.titles, function(value, key) {
