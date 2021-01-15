@@ -8,8 +8,8 @@
 	</div>
 	<div class="row">
 	    <div class="small-12 medium-6 medium-offset-3 columns">
-        Missing: {{ changes.missing }}</div>
-        <div>Downgraded: {{ changes.downgrades }}</div>
+        Missing: {{changes.missing}}</div>
+        <div>Downgraded: {{changes.downgrades}}</div>
 	</div>
-	<textarea style="width: 100%; height: 25rem;">{{ filtered.titlesImport = importFile | fromFile | fromCSV | fromImport | (filter:{title: query} | orderBy:orderProp) }}</textarea>	
+	<textarea style="width: 100%; height: 25rem;">{{ filtered.titlesImport = (importFile | fromFile | fromCSV | fromImport | (filter:{title: query} | orderBy:orderProp)) }}</textarea>	
 </div>

@@ -519,6 +519,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
             item.isUV = "UVbundle";
           }
           getSeasonEpisodes(item, contentVariants).then(function(data) {
+            //Errors data.content
             angular.forEach(data.content, function(value, key) {
               if(item.isUV && value.episodeNumberInSeason!="0" && !value.isUV)//TODO: remove ' && !value.isUV'
               {
@@ -556,6 +557,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
           var getTVSeasons = function()
           {
             getSeriesSeasons(item, offset, contentVariants).then(function(data) {
+              //Errors data.content
               var oneSeason = data.content[0];
               oneSeason.parent = item;
               item.subitems.push(oneSeason);
@@ -607,7 +609,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
           if(item.content[cId])
           {
             //item.content[cId].push(contentVariant);
-            console.log("Duplicate contentId: "+cId);
+//TODO            console.log("Duplicate contentId: "+cId);
             ////console.log(contentVariant.videoQuality+" "+item.content[cId].videoQuality);
             if(videoQualityList[contentVariant.videoQuality] > videoQualityList[item.content[cId].videoQuality])
             {

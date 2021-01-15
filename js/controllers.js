@@ -160,6 +160,7 @@ angular.module('app.controllers', []).
       });
 
       var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
+      $scope.importFile = '';
       $scope.changes = {missing: '', downgrades: ''};//, added: {}, upgrades: {}};
       $scope.compareFile = function() {
         alert('compare');
@@ -347,7 +348,7 @@ angular.module('app.controllers', []).
 
       $scope.movieProgress = 0;
       $scope.titles = [];
-      $scope.filtered = { titles: [] };
+      $scope.filtered = { titles: [], titlesImport: [] };
       $scope.totalCount = 0;
       $scope.allCount = 0;
 
