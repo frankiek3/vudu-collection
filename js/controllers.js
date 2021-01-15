@@ -154,7 +154,6 @@ angular.module('app.controllers', []).
       };
       $scope.changes = {missing: '', downgrades: ''};//, added: {}, upgrades: {}};
       $scope.compareFile = function() {
-      	alert('scope.compareFile');
         var missing = {};
         var downgrades = {};
         //added: {}, upgrades: {}};

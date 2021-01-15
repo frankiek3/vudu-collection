@@ -2,7 +2,7 @@
 <div class="columns">
 	<div class="row">
 	    <div class="small-12 medium-6 medium-offset-3 columns">
-        <input type="file" accept=".csv" (change)="handleFileInput($event.target.files)"/>
+        <input type="file" accept=".csv" onchange="angular.element(this).scope().handleFileInput(event.target.files)"/>
         <button ng-click="compareFile()">Compare</button>
 	 </div>
 	</div>
