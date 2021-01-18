@@ -138,7 +138,7 @@ angular.module('app.controllers', []).
       $scope.handleFileInput = function(files) {
         var reader = new FileReader();
         reader.onload = function(){
-          $scope.$apply(function() {
+          $scope.$apply(function(){
             var rows = reader.result.split('\r\n');
             rows[0] = rows[0].split(',');
             for(var i = 1; i < rows.length; i++){
@@ -159,10 +159,14 @@ angular.module('app.controllers', []).
         var downgrades = {};
         //added: {}, upgrades: {}};
         var compared = {};
-        angular.forEach(filtered.titles, function(value, key) {
+        for(var i = filtered.titles.length-1; i>=0; i--)
+        {
+          var value = filtered.titles[i];
           compared[value.contentId] = value.videoQuality;
-        });
-        angular.forEach(filtered.importTitles, function(value, key) {
+        }
+        for(var i = filtered.importTitles.length-1; i>=0; i--)
+        {
+          var value = filtered.importTitles[i];
           //Missing
           if(compared[value.contentId] === undefined)
           {
@@ -181,7 +185,7 @@ angular.module('app.controllers', []).
             //{}
             delete compared[value.contentId];
           }
-        });
+        }
         $scope.changes = {missing: Object.keys(missing).join(', '), downgrades: Object.keys(downgrades).join(', ')};
       };
 
