@@ -43,7 +43,7 @@ angular.module('app.controllers', []).
           input[i].videoQuality,
           input[i].bestAvailVideoQuality,
           input[i].contentId,
-          '"' + input[i].title.replace(/"/g, '""') + '"',
+          '"' + input[i].title.replace(/[",]/g, '') + '"',
           input[i].country,
           input[i].language,
           input[i].lengthSeconds,
@@ -69,7 +69,7 @@ angular.module('app.controllers', []).
           input[i].videoQuality,
           input[i].bestAvailVideoQuality,
           input[i].contentId,
-          '"' + input[i].title.replace(/"/g, '""') + '"',
+          '"' + input[i].title.replace(/[",]/g, '') + '"',
           input[i].country,
           input[i].language,
           input[i].lengthSeconds,
@@ -89,7 +89,7 @@ angular.module('app.controllers', []).
               subitem[j].videoQuality,
               subitem[j].bestAvailVideoQuality,
               subitem[j].contentId,
-              '"' + subitem[j].title.replace(/"/g, '""') + '"',
+              '"' + subitem[j].title.replace(/[",]/g, '') + '"',
               subitem[j].country,
               subitem[j].language,
               subitem[j].lengthSeconds,
@@ -149,6 +149,7 @@ angular.module('app.controllers', []).
             }
             rows.shift;
             $scope.importTitles = rows;
+            console.log(rows);
           });
         };
         reader.readAsText(files[0]);
@@ -178,7 +179,7 @@ angular.module('app.controllers', []).
             //Downgraded
             if(videoQualityList[compared[value.contentId]] < videoQualityList[value.videoQuality])
             {
-              changes.downgrades[value.contentId] = compared[value.contentId];
+              downgrades[value.contentId] = compared[value.contentId];
             }
             //Upgraded
             //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
