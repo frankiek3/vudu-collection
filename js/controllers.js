@@ -147,7 +147,7 @@ angular.module('app.controllers', []).
                 return obj;
               }, {});
             }
-            rows.shift;
+            rows.shift();
             $scope.importTitles = rows;
             console.log(rows);
           });
