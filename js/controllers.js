@@ -136,19 +136,20 @@ angular.module('app.controllers', []).
       var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
       $scope.importTitles = [];
       $scope.handleFileInput = function(files) {
-      	alert('scope.handleFileInput');
         var reader = new FileReader();
         reader.onload = function(){
-          var rows = reader.result.split('\r\n');
-          rows[0] = rows[0].split(',');
-          for(var i = 1; i < rows.length; i++){
-            rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
-              obj[rows[0][ind]] = str;
-              return obj;
-            }, {});
-          }
-          rows.shift;
-          $scope.importTitles = rows;
+          $scope.$apply(function() {
+            var rows = reader.result.split('\r\n');
+            rows[0] = rows[0].split(',');
+            for(var i = 1; i < rows.length; i++){
+              rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
+                obj[rows[0][ind]] = str;
+                return obj;
+              }, {});
+            }
+            rows.shift;
+            $scope.importTitles = rows;
+          });
         };
         reader.readAsText(files[0]);
       };
