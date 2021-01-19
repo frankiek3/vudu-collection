@@ -73,7 +73,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
              });
          }
      };
-  }).
+  }]).
   filter('conditional', function() {
     return function(b, t, f) {
       return b ? t : f;
