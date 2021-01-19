@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('app.controllers', []).
-  controller('AppCtrl', ['$scope', '$location', '$timeout', 'alertService', 'progressService', 'vuduFactory',
+
+controller('AppCtrl', ['$scope', '$location', '$timeout', 'alertService', 'progressService', 'vuduFactory',
     function ($scope, $location, $timeout, alertService, progressService, vuduFactory) {
       // console.log('');
       // console.group('AppCtrl');
@@ -33,7 +34,7 @@ angular.module('app.controllers', []).
       // console.groupEnd();
     }
   ]).
-  filter('toExport', function() {
+filter('toExport', function() {
     return function(input) {
       var r = [[ 'videoQuality','bestAvailVideoQuality','contentId','title','country','language',
         'lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV','isMA'
@@ -59,7 +60,7 @@ angular.module('app.controllers', []).
       return r;
     };
   }).
-  filter('toTVExport', function() {
+filter('toTVExport', function() {
     return function(input) {
       var r = [[ 'videoQuality','bestAvailVideoQuality','contentId','title','country','language',
         'lengthSeconds','mpaaRating','releaseTime','studioName','tomatoMeter','type','isUV'
@@ -106,7 +107,7 @@ angular.module('app.controllers', []).
       return r;
     };
   }).
-  filter('toCsv', function() {
+filter('toCsv', function() {
     return function(input) {
       var rows = [];
       for(var i = 0; i < input.length; i++){
@@ -115,12 +116,12 @@ angular.module('app.controllers', []).
       return rows.join('\r\n');
     };
   }).
-  filter('toDownload', function() {
+filter('toDownload', function() {
     return function(input) {
       return 'data:attachment/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(input);
     };
   }).
-  controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeout', '$window', 'alertService', 'progressService', 'vuduFactory', 
+controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeout', '$window', 'alertService', 'progressService', 'vuduFactory', 
     function ($scope, $filter, $http, $location, $timeout, $window, alertService, progressService, vuduFactory) {
       // console.log('');
       // console.group('TitleListCtrl');
@@ -353,7 +354,7 @@ angular.module('app.controllers', []).
             // progressService.reset();
             $scope.movieProgress = 100;
 
-            getWished();
+            getTV();
           }
           progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
           progressService.type = progressService.value==100 ? 'success' : '';
@@ -432,6 +433,7 @@ angular.module('app.controllers', []).
             getTV();
           } else {
             $scope.tvProgress = 100;
+            getWished();
           }
           progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
           progressService.type = progressService.value==100 ? 'success' : '';
@@ -485,7 +487,6 @@ angular.module('app.controllers', []).
           //  $scope.movieProgress = 100;
             
             getTitles();
-            getTV();
           }
           //progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
           //progressService.type = progressService.value==100 ? 'success' : '';
@@ -502,7 +503,6 @@ angular.module('app.controllers', []).
           // console.log('data: ', data);
         });
       };
-      getContent();
 
       //$scope.wishlistProgress = 0;
       $scope.wishlist = [];
@@ -549,7 +549,8 @@ angular.module('app.controllers', []).
           // console.log('data: ', data);
         });
       };
-//getWished();
+
+      getContent();
 
       // $scope.uvvuLink = function(id) {
       //   window.open('https://www.uvvu.com/en/us/library/' + slug); // need access to uvvu (have urn)
@@ -560,14 +561,12 @@ angular.module('app.controllers', []).
       }
     }
   ]).
-
-	controller('TitleDetailCtrl', ['$scope', '$routeParams',
+controller('TitleDetailCtrl', ['$scope', '$routeParams',
 		function ($scope, $routeParams) {
 			// console.log('TitleDetailCtrl: $routeParams: ', $routeParams);
 			$scope.id = $routeParams.id;
-	}]).
-
-	controller('UserCtrl', ['$scope', '$location', 'alertService', 'vuduFactory',
+	}]).	
+controller('UserCtrl', ['$scope', '$location', 'alertService', 'vuduFactory',
 	function ($scope, $location, alertService, vuduFactory) {
 	$scope.error = null;
 	$scope.user = null;

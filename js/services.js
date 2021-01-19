@@ -97,6 +97,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
 	var params = {
 		claimedAppId: appId,
 		format: 'application/json',
+		contentEncoding: "gzip",
 		callback: 'JSON_CALLBACK',
 		_type: loginType == "wmt" ? "linkedAccountSessionKeyRequest" : 'sessionKeyRequest',
 		followup: 'user',
@@ -171,7 +172,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
 				params: {
 					claimedAppId: appId,
 					format: 'application/json',
-//contentEncoding=gzip
+                    contentEncoding: "gzip",
 					_type: 'contentSearch',
 					count: count,
 					dimensionality: 'any',
@@ -202,6 +203,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
 				params: {
 					claimedAppId: appId,
 					format: 'application/json',
+					contentEncoding: "gzip",
 					_type: 'contentSearch',
 					count: count,
 					dimensionality: 'any',
@@ -232,6 +234,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
 				params: {
 					claimedAppId: appId,
 					format: 'application/json',
+					contentEncoding: "gzip",
 					_type: 'contentSearch',
 					count: count,
 					dimensionality: 'any',
@@ -261,6 +264,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
 				params: {
 					claimedAppId: appId,
 					format: 'application/json',
+					contentEncoding: "gzip",
 					_type: 'contentVariantSearch',
 					count: 1000,
 					dimensionality: 'any',
@@ -289,6 +293,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
         params: {
 					claimedAppId: appId,
 					format: 'application/json',
+					contentEncoding: "gzip",
 					_type: 'contentSearch',
 					followup: ['promoTags', 'ratingsSummaries', 'totalCount'],
 					includeComingSoon: true,
@@ -318,6 +323,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
         params: {
 					claimedAppId: appId,
 					format: 'application/json',
+					contentEncoding: "gzip",
 					_type: 'contentSearch',
 					count: 100,//
 					followup: ['ratingsSummaries', 'usefulStreamableOffers', 'totalCount'],//
@@ -343,6 +349,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
         params: {
 					claimedAppId: appId,
 					format: 'application/json',
+					contentEncoding: "gzip",
 					_type: 'contentSearch',
 					containerId: item.contentId,
 					count: 100,//
@@ -519,7 +526,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
             item.isUV = "UVbundle";
           }
           getSeasonEpisodes(item, contentVariants).then(function(data) {
-            //Errors data.content
+            //http(s) Errors data.content
             angular.forEach(data.content, function(value, key) {
               if(item.isUV && value.episodeNumberInSeason!="0" && !value.isUV)//TODO: remove ' && !value.isUV'
               {
