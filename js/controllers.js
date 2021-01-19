@@ -141,14 +141,14 @@ angular.module('app.controllers', []).
         var downgrades = {};
         //added: {}, upgrades: {}};
         var compared = {};
-        for(var i = filtered.titles.length-1; i>=0; i--)
+        for(var i = $scope.filtered.titles.length-1; i>=0; i--)
         {
-          var value = filtered.titles[i];
+          var value = $scope.filtered.titles[i];
           compared[value.contentId] = value.videoQuality;
         }
-        for(var i = filtered.importTitles.length-1; i>=0; i--)
+        for(var i = $scope.filtered.importTitles.length-1; i>=0; i--)
         {
-          var value = filtered.importTitles[i];
+          var value = $scope.filtered.importTitles[i];
           //Missing
           if(compared[value.contentId] === undefined)
           {
