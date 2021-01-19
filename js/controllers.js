@@ -142,7 +142,7 @@ angular.module('app.controllers', []).
           rows[0] = rows[0].split(',');
           for(var i = 1; i < rows.length; i++){
             rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
-              obj[rows[0][ind]] = str;
+              obj[rows[0][ind]] = str.replace(/"/g, '');
               return obj;
             }, {});
           }
