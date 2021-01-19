@@ -138,18 +138,17 @@ angular.module('app.controllers', []).
       $scope.handleFileInput = function(files) {
         var reader = new FileReader();
         reader.onload = function(){
+          var rows = reader.result.split('\r\n');
+          rows[0] = rows[0].split(',');
+          for(var i = 1; i < rows.length; i++){
+            rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
+              obj[rows[0][ind]] = str;
+              return obj;
+            }, {});
+          }
+          rows.shift();
           $scope.$apply(function(){
-            var rows = reader.result.split('\r\n');
-            rows[0] = rows[0].split(',');
-            for(var i = 1; i < rows.length; i++){
-              rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
-                obj[rows[0][ind]] = str;
-                return obj;
-              }, {});
-            }
-            rows.shift();
             $scope.importTitles = rows;
-            console.log(rows);
           });
         };
         reader.readAsText(files[0]);
