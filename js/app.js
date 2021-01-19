@@ -43,6 +43,37 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
       },
     };
   }).
+  directive('ngFileModel', ['$parse', function ($parse, $sce) {
+     return {
+         restrict: 'A',
+         link: function(scope, element, attrs) {
+             var rows = [];
+             element.bind('change', function(event) {
+               var files = event.target.files;
+               var reader = new FileReader();
+               reader.onload = function(e){
+                 rows = reader.result.split('\r\n');
+                 rows[0] = rows[0].split(',');
+                 for(var i = 1; i < rows.length; i++){
+                   var title = rows[i].split('"')[1];
+                   rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
+                     obj[rows[0][ind]] = str;
+                     return obj;
+                   }, {});
+                   rows[i][3] = title;
+                 }
+                 rows.shift();
+                 console.log(scope.importTitles);
+                 scope.$apply(function(){
+                   //$parse(attrs.ngFileModel).assign(scope, '');
+                   scope.importTitles = rows;
+                 });
+               };
+               reader.readAsText(files[0]);
+             });
+         }
+     };
+  }).
   filter('conditional', function() {
     return function(b, t, f) {
       return b ? t : f;

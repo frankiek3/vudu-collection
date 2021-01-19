@@ -137,7 +137,7 @@ angular.module('app.controllers', []).
       $scope.importTitles = [];
       $scope.handleFileInput = function(files) {
         var reader = new FileReader();
-        reader.onload = function(){
+        reader.onload = function(e){
           var rows = reader.result.split('\r\n');
           rows[0] = rows[0].split(',');
           for(var i = 1; i < rows.length; i++){
