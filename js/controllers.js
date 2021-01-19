@@ -43,7 +43,7 @@ angular.module('app.controllers', []).
           input[i].videoQuality,
           input[i].bestAvailVideoQuality,
           input[i].contentId,
-          '"' + input[i].title.replace(/[",]/g, '') + '"',
+          '"' + input[i].title.replace(/"/g, "'") + '"',
           input[i].country,
           input[i].language,
           input[i].lengthSeconds,
@@ -69,7 +69,7 @@ angular.module('app.controllers', []).
           input[i].videoQuality,
           input[i].bestAvailVideoQuality,
           input[i].contentId,
-          '"' + input[i].title.replace(/[",]/g, '') + '"',
+          '"' + input[i].title.replace(/"/g, "'") + '"',
           input[i].country,
           input[i].language,
           input[i].lengthSeconds,
@@ -89,7 +89,7 @@ angular.module('app.controllers', []).
               subitem[j].videoQuality,
               subitem[j].bestAvailVideoQuality,
               subitem[j].contentId,
-              '"' + subitem[j].title.replace(/[",]/g, '') + '"',
+              '"' + subitem[j].title.replace(/"/g, "'") + '"',
               subitem[j].country,
               subitem[j].language,
               subitem[j].lengthSeconds,
@@ -141,10 +141,12 @@ angular.module('app.controllers', []).
           var rows = reader.result.split('\r\n');
           rows[0] = rows[0].split(',');
           for(var i = 1; i < rows.length; i++){
+            var title = rows[i].split('"')[1];
             rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
-              obj[rows[0][ind]] = str.replace(/"/g, '');
+              obj[rows[0][ind]] = str;
               return obj;
             }, {});
+            rows[i][3] = title;
           }
           rows.shift();
           $scope.$apply(function(){
