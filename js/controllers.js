@@ -137,6 +137,7 @@ angular.module('app.controllers', []).
       $scope.importTitles = [];
       $scope.changes = {missing: '', downgrades: ''};//, added: {}, upgrades: {}};
       $scope.compareFile = function() {
+        console.log($scope.importTitles);
         var missing = {};
         var downgrades = {};
         //added: {}, upgrades: {}};

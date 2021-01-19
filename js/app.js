@@ -54,13 +54,21 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
                reader.onload = function(e){
                  rows = reader.result.split('\r\n');
                  rows[0] = rows[0].split(',');
+                 rows[0][9] = "studio";
                  for(var i = 1; i < rows.length; i++){
                    var title = rows[i].split('"')[1];
                    rows[i] = rows[i].split(',').reduce(function(obj, str, ind) {
+                     if(ind==3)
+                     {
+                       str = title;
+                     }
+                     else if(ind==9)
+                     {
+                       str = {name: str};
+                     }
                      obj[rows[0][ind]] = str;
                      return obj;
                    }, {});
-                   rows[i][3] = title;
                  }
                  rows.shift();
                  console.log(scope.importTitles);
