@@ -2,13 +2,13 @@
 <div class="columns">
 	<div class="row">
 	    <div class="small-12 medium-6 medium-offset-3 columns">
-        <input type="file" accept=".csv" ng-file-model="handleFileInput"/>
+        <input type="file" accept=".csv" ng-file-model="importTitles"/>
         <button ng-click="compareFile()">Compare</button>
 	 </div>
 	</div>
 	<div class="row">
-	    <div>Missing: {{changes.missing}}</div>
-        <div>Downgraded: {{changes.downgrades}}</div>
+	    <div>Missing: {{Object.keys(changes.missing).join(', ')}}</div>
+        <div>Downgraded: {{Object.keys(changes.downgrades).join(', ')}}</div>
 	</div>
 	<textarea style="width: 100%; height: 25rem;">{{ filtered.importTitles = (importTitles | filter:{title: query} | orderBy:orderProp) | toExport | toCsv }}</textarea>	
 </div>

@@ -136,12 +136,9 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
 
       var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
       $scope.importTitles = [];
-      $scope.changes = {missing: '', downgrades: ''};//, added: {}, upgrades: {}};
+      $scope.importTv = [];
+      $scope.changes = {missing: {}, downgrades: {}, missingtv: {}, downgradestv: {}};//, added: {}, upgrades: {}};
       $scope.compareFile = function() {
-        console.log($scope.importTitles);
-        var missing = {};
-        var downgrades = {};
-        //added: {}, upgrades: {}};
         var compared = {};
         for(var i = $scope.filtered.titles.length-1; i>=0; i--)
         {
@@ -154,7 +151,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
           //Missing
           if(compared[value.contentId] === undefined)
           {
-            missing[value.contentId] = value.videoQuality;
+            $scope.changes.missing[value.contentId] = value.videoQuality;
           }
           //Exists
           else
@@ -162,7 +159,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             //Downgraded
             if(videoQualityList[compared[value.contentId]] < videoQualityList[value.videoQuality])
             {
-              downgrades[value.contentId] = compared[value.contentId];
+              $scope.changes.downgrades[value.contentId] = compared[value.contentId];
             }
             //Upgraded
             //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
@@ -170,7 +167,11 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             delete compared[value.contentId];
           }
         }
-        $scope.changes = {missing: Object.keys(missing).join(', '), downgrades: Object.keys(downgrades).join(', ')};
+      };
+      $scope.findids = function(ids){
+        return function(item){
+          return ids.find(k=> item.contentId == k)
+        }
       };
 
       $scope.exportDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
@@ -327,7 +328,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
 
       $scope.movieProgress = 0;
       $scope.titles = [];
-      $scope.filtered = { titles: [], importTitles: [] };
+      $scope.filtered = { titles: [], tv: [], importTitles: [], importTv: [], wishlist: []};
       $scope.totalCount = 0;
       $scope.allCount = 0;
 
@@ -376,12 +377,12 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
 
       $scope.tvProgress = 0;
       $scope.tv = [];
-      $scope.filtered.tv = [];
       $scope.totalTV = 0;
       $scope.allTV = 0;
 
       var cntTV = 0;
-      
+
+/*
       var initTV = function() {
         vuduFactory.getTVOwned(cntTV, $scope.contentVariants).then(function(data) {
           $scope.totalTV = data.totalCount;
@@ -415,6 +416,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
           // console.log('data: ', data);
         });
       };
+*/
 
       var getTV = function() {
         vuduFactory.getTVOwned(cntTV, $scope.contentVariants).then(function(data) {
@@ -506,7 +508,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
 
       //$scope.wishlistProgress = 0;
       $scope.wishlist = [];
-      $scope.filtered.wishlist = [];
+      //$scope.filtered.wishlist = [];
       //$scope.totalWish = 0;
       //$scope.allWish = 0;
 

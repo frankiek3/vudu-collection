@@ -74,7 +74,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
                  console.log(scope.importTitles);
                  scope.$apply(function(){
                    //$parse(attrs.ngFileModel).assign(scope, '');
-                   scope.importTitles = rows;
+                   scope[attrs.ngFileModel] = rows;
                  });
                };
                reader.readAsText(files[0]);
