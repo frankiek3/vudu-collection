@@ -154,10 +154,13 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
         {
           var value = $scope.filtered[exportName][i];
           compared[value.contentId] = value.videoQuality;
-          for(var j = value.subitems.length-1; j>=0; j--)
+          if(value.subitems)
           {
-            var subvalue = value.subitems[j];
-            compared[subvalue.contentId] = subvalue.videoQuality;
+            for(var j = value.subitems.length-1; j>=0; j--)
+            {
+              var subvalue = value.subitems[j];
+              compared[subvalue.contentId] = subvalue.videoQuality;
+            }
           }
         }
         for(var i = $scope.filtered[importName].length-1; i>=0; i--)
