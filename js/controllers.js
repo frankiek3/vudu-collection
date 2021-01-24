@@ -164,7 +164,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             }
           }
         }
-        alert(compared[1000905];
+        alert(compared[1000905]);
         for(var i = $scope.filtered[importName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[importName][i];
