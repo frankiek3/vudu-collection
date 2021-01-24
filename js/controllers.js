@@ -164,6 +164,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             }
           }
         }
+        alert(compared.1000905);
         for(var i = $scope.filtered[importName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[importName][i];
@@ -184,8 +185,9 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
             //{}
             //delete $scope.changes["missing"+exportName][value.contentId];
-            delete compared[value.contentId];
+            //delete compared[value.contentId];
           }
+          if(value.contentId == 1000905) alert(value.contentId);
           progressService.value = 100 * Math.ceil(1 - (i / $scope.filtered[importName].length));
         }
         progressService.type = progressService.value==100 ? 'success' : '';
