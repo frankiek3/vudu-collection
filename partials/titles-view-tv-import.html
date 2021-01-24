@@ -10,12 +10,12 @@
 	</div>
 	<div class="row">
 	    <div>Missing: 
-<div ng-repeat-start="contentId in changes.missingtv">
+<div ng-repeat-start="(contentId, videoQuality) in changes.missingtv">
 <a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
 </div>
         </div>
         <div>Downgraded: 
-<div ng-repeat-start="contentId in changes.downgradedtv">
+<div ng-repeat-start="(contentId, videoQuality) in changes.downgradedtv">
 <a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
 </div>
         </div>
