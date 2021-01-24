@@ -135,23 +135,31 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       });
 
       var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};//Temp
+      $scope.contentVariants = {};
+      $scope.movieProgress = 0;
+      $scope.titles = [];
+      $scope.filtered = { titles: [], tv: [], importTitles: [], importTv: [], wishlist: []};
+      $scope.totalCount = 0;
+      $scope.allCount = 0;
       $scope.importTitles = [];
       $scope.importTv = [];
-      $scope.changes = {missing: {}, downgrades: {}, missingtv: {}, downgradestv: {}};//, added: {}, upgrades: {}};
-      $scope.compareFile = function() {
+      $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}};//, added: {}, upgrades: {}};
+      $scope.compareFile = function(importName) {
+        alert(importName);
+        var exportName = importName.replace('importT', 't');
         var compared = {};
-        for(var i = $scope.filtered.titles.length-1; i>=0; i--)
+        for(var i = $scope.filtered[exportName].length-1; i>=0; i--)
         {
-          var value = $scope.filtered.titles[i];
+          var value = $scope.filtered[exportName][i];
           compared[value.contentId] = value.videoQuality;
         }
-        for(var i = $scope.filtered.importTitles.length-1; i>=0; i--)
+        for(var i = $scope.filtered[importName].length-1; i>=0; i--)
         {
-          var value = $scope.filtered.importTitles[i];
+          var value = $scope.filtered[importName][i];
           //Missing
           if(compared[value.contentId] === undefined)
           {
-            $scope.changes.missing[value.contentId] = value.videoQuality;
+            $scope.changes["missing"+exportName][value.contentId] = value.videoQuality;
           }
           //Exists
           else
@@ -159,7 +167,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             //Downgraded
             if(videoQualityList[compared[value.contentId]] < videoQualityList[value.videoQuality])
             {
-              $scope.changes.downgrades[value.contentId] = compared[value.contentId];
+              $scope.changes["downgraded"+exportName][value.contentId] = compared[value.contentId];
             }
             //Upgraded
             //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
@@ -323,15 +331,6 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       };
       
       var batchLimit = 1000;
-
-      $scope.contentVariants = {};
-
-      $scope.movieProgress = 0;
-      $scope.titles = [];
-      $scope.filtered = { titles: [], tv: [], importTitles: [], importTv: [], wishlist: []};
-      $scope.totalCount = 0;
-      $scope.allCount = 0;
-
       var cnt = 0;
       
       var getTitles = function() {
