@@ -146,6 +146,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}};//, added: {}, upgrades: {}};
       $scope.objectkeys = Object.keys;
       $scope.compareFile = function(importName) {
+        progressService.reset();
         var exportName = importName.replace('importT', 't');
         var compared = {};
         $scope.changes["missing"+exportName] = {};
@@ -185,7 +186,9 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             //delete $scope.changes["missing"+exportName][value.contentId];
             delete compared[value.contentId];
           }
+          progressService.value = 100 * Math.ceil(1 - (i / $scope.filtered[importName].length));
         }
+        progressService.type = progressService.value==100 ? 'success' : '';
       };
       $scope.findids = function(ids){
         return function(item){

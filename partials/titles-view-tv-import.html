@@ -9,8 +9,14 @@
 	 </div>
 	</div>
 	<div class="row">
-	    <div>Missing: {{objectkeys(changes.missingtv).join(', ')}}</div>
-        <div>Downgraded: {{objectkeys(changes.downgradedtv).join(', ')}}</div>
+	    <div>Missing: 
+<div ng-repeat-start="contentId in changes.missingtv">
+<a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
+        </div>
+        <div>Downgraded: 
+<div ng-repeat-start="contentId in changes.downgradedtv">
+<a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
+        </div>
 	</div>
 	<textarea style="width: 100%; height: 25rem;">{{ filtered.importTv = (importTv | filter:{title: query} | orderBy:orderProp) | toTVExport | toCsv }}</textarea>	
 </div>
