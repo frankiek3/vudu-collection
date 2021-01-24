@@ -10,13 +10,13 @@
 	</div>
 	<div class="row">
 	    <div>Missing: 
-<div ng-repeat-start="(contentId, videoQuality) in changes.missingtitles">
-<a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
+<div ng-repeat="(contentId, videoQuality) in changes.missingtitles">
+  <a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
 </div>
         </div>
         <div>Downgraded: 
-<div ng-repeat-start="(contentId, videoQuality) in changes.downgradedtitlea">
-<a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
+<div ng-repeat="(contentId, videoQuality) in changes.downgradedtitles">
+  <a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
 </div>
         </div>
 	</div>
