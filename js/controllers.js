@@ -167,33 +167,36 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
           }
         }
 */
-        alert($scope.contentVariants[1000905]);
         for(var i = $scope.filtered[importName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[importName][i];
-          //Missing
-          if($scope.contentVariants[value.contentId] === undefined)
+          if(value.videoQuality!='')
           {
-            $scope.changes["missing"+exportName][value.contentId] = value.videoQuality;
-          }
-          //Exists
-          else
-          {
-            //Downgraded
-            if(videoQualityList[$scope.contentVariants[value.contentId]] < videoQualityList[value.videoQuality])
+            //Missing
+            if{$scope.contentVariants[value.contentId] === undefined)
             {
-              $scope.changes["downgraded"+exportName][value.contentId] = $scope.contentVariants[value.contentId];
+              $scope.changes["missing"+exportName][value.contentId] = value.videoQuality;
             }
-            //Upgraded
-            //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
-            //{}
-            //delete $scope.changes["missing"+exportName][value.contentId];
-            //delete compared[value.contentId];
+            //Exists
+            else
+            {
+              //Downgraded
+              if(videoQualityList[$scope.contentVariants[value.contentId]] < videoQualityList[value.videoQuality])
+              {
+                $scope.changes["downgraded"+exportName][value.contentId] = $scope.contentVariants[value.contentId];
+              }
+              //Upgraded
+              //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
+              //{}
+              //delete $scope.changes["missing"+exportName][value.contentId];
+              //delete compared[value.contentId];
+            }
           }
           progressService.value = 100 * Math.ceil(1 - (i / $scope.filtered[importName].length));
         }
         progressService.type = progressService.value==100 ? 'success' : '';
       };
+
       $scope.findids = function(ids){
         return function(item){
           return ids.find(k=> item.contentId == k)
