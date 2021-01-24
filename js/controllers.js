@@ -148,10 +148,10 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       $scope.compareFile = function(importName) {
         progressService.reset();
         var exportName = importName.replace('importT', 't');
-        //var compared = {};
+        var compared = {};
         $scope.changes["missing"+exportName] = {};
         $scope.changes["downgraded"+exportName] = {};
-/*
+
         for(var i = $scope.filtered[exportName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[exportName][i];
@@ -166,14 +166,14 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             }
           }
         }
-*/
+
         for(var i = $scope.filtered[importName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[importName][i];
           if(value.videoQuality != '')
           {
             //Missing
-            if($scope.contentVariants[value.contentId] === undefined)
+            if(compared[value.contentId] === undefined)
             {
               $scope.changes["missing"+exportName][value.contentId] = value.videoQuality;
             }
@@ -181,9 +181,9 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             else
             {
               //Downgraded
-              if(videoQualityList[$scope.contentVariants[value.contentId]] < videoQualityList[value.videoQuality])
+              if(videoQualityList[compared[value.contentId]] < videoQualityList[value.videoQuality])
               {
-                $scope.changes["downgraded"+exportName][value.contentId] = $scope.contentVariants[value.contentId];
+                $scope.changes["downgraded"+exportName][value.contentId] = value.videoQuality;
               }
               //Upgraded
               //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
