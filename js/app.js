@@ -74,9 +74,11 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
                  console.log(scope.importTitles);
                  scope.$apply(function(){
                    //$parse(attrs.ngFileModel).assign(scope, '');
-                   scope[attrs.ngFileModel] = rows;
+                   scope.importTitles = rows;
+                   //scope[attrs.ngFileModel] = rows;
                  });
                  //scope.compareFile(attrs.ngFileModel);
+                 alert(rows[0].contentId);
                };
                reader.readAsText(files[0]);
              });
