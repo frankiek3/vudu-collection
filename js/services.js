@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('app.services', []).
-  factory('alertService', function() {
+
+factory('alertService', function() {
     var alerts = [];
 
     var clear = function() {
@@ -17,15 +18,10 @@ angular.module('app.services', []).
       alerts.push({type: type, msg: msg});
     };
 
-    return {
-      alerts: alerts
-      , clear: clear
-      , close: close
-      , push: push
-    }
+    return { alerts: alerts, clear: clear, close: close, push: push };
   }).
 /*
-  factory('RequestManager', function(){
+factory('RequestManager', function(){
     var manager = {
       limit: 50,
       queue: [],
@@ -64,7 +60,7 @@ angular.module('app.services', []).
     return manager;
   )}.
 */
-  factory('progressService', function() {
+factory('progressService', function() {
     var value = 0;
     var type = 'success';
 
@@ -73,14 +69,10 @@ angular.module('app.services', []).
       this.type = 'success';
     };
 
-    return {
-      value: value
-      , type: type
-      , reset: reset
-    }
+    return { value: value, type: type, reset: reset };
   }).
 
-  factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
+factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
     var url = 'https://api.vudu.com/api2/';
     var cachedurl = "http://apicache.vudu.com/api2/";
     var appId = 'fmbb-vudu-collection';
@@ -92,8 +84,8 @@ angular.module('app.services', []).
       return user && user.sessionKey && user.id;
     };
 
-var sessionKeyRequest = function(userName, password, loginType, sensor_data, userId, sessionKey)
-{
+  var sessionKeyRequest = function(userName, password, loginType, sensor_data, userId, sessionKey)
+  {
 	var params = {
 		claimedAppId: appId,
 		format: 'application/json',
@@ -152,7 +144,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
 		console.log('response: ', response);
 		return response;
 	});
-}
+  }
 		
 		var signOut = function() {
 			var deferred = $q.defer();
@@ -476,8 +468,10 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
           item.videoQuality = contentVariant.videoQuality;
           item.ultraVioletSyncStatus = contentVariant.ultraVioletSyncStatus;
         }
-        if(item.haveUV || item.hasUV || item.ultraVioletSyncStatus) item.isUV = "UV";
-
+        if(item.haveUV || item.hasUV || item.ultraVioletSyncStatus)
+        {
+          item.isUV = "UV";
+        }
         if(data.contentVariants)
         {
           var cV = parseVuduType(data.contentVariants[0], null);
@@ -547,7 +541,10 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
                 //  value.videoQuality = item.videoQuality;
                 //}
               }
-              if(haveSome || contentVariants[value.contentId]) item.subitems.push(value);
+              if(haveSome || contentVariants[value.contentId])
+              {
+                item.subitems.push(value);
+              }
             });
             if(item.parent && !item.subitems.length && item.parent.subitems)
             {
@@ -574,15 +571,10 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
                 offset++;
                 getTVSeasons();
               }
-              //else
-              //{
-              //  item.count = data.subitems.length;
-              //}
             });
           };
           getTVSeasons();
         }
-
 
       } else if(data._type == 'contentVariant'){
         item = {
@@ -608,7 +600,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
           moreBelow: data.moreBelow[0] == 'true',
           totalCount: data.totalCount ? data.totalCount[0] : null,
           price: 0,
-          // zoom: zoomData?
+          // zoom: zoomData
         };
         angular.forEach(data.contentVariant, function(value, key) {
           var contentVariant = parseVuduType(value, null);
@@ -639,7 +631,7 @@ var sessionKeyRequest = function(userName, password, loginType, sensor_data, use
           moreAbove: data.moreAbove[0] == 'true',
           moreBelow: data.moreBelow[0] == 'true',
           totalCount: data.totalCount[0]
-          // zoom: zoomData?
+          // zoom: zoomData
         };
         angular.forEach(data.content, function(value, key) {
           item.content.push(parseVuduType(value, contentVariants));//[key] = parseVuduType(value);

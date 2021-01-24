@@ -10,7 +10,7 @@ footer {
 .title-area a { cursor: default; }
 
 .top-bar .name h1 a { width: 70%; }
-@media only screen and (min-width: 40.063em){
+@media only screen and (min-width: 60.063em){
   .top-bar .name h1 a {
     width: auto;
   }
