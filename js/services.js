@@ -113,6 +113,10 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
 				expirationTime: response.data.sessionKey[0].expirationTime[0],
 				sessionKey: response.data.sessionKey[0].sessionKey[0]
 			};
+			$cookieStore.ffmbVuduCollection_id = user.id;
+			$cookieStore.ffmbVuduCollection_expirationTime = user.expirationTime;
+			$cookieStore.ffmbVuduCollection_sessionKey = user.sessionKey;
+			
 		}
 		else if(userId && sessionKey)
 		{
@@ -149,9 +153,12 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
 		var signOut = function() {
 			var deferred = $q.defer();
 			user = null;
-			$cookieStore.remove('ffmbVuduCollection_id');
-			$cookieStore.remove('ffmbVuduCollection_expirationTime');
-			$cookieStore.remove('ffmbVuduCollection_sessionKey');
+			//$cookieStore.remove('ffmbVuduCollection_id');
+			//$cookieStore.remove('ffmbVuduCollection_expirationTime');
+			//$cookieStore.remove('ffmbVuduCollection_sessionKey');
+			delete $cookieStore.ffmbVuduCollection_id;
+			delete $cookieStore.ffmbVuduCollection_expirationTime;
+			delete $cookieStore.ffmbVuduCollection_sessionKey;
 			
 			$timeout(function() {
 				deferred.resolve({status: 'success', message: 'Signed out'});

@@ -143,14 +143,15 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       $scope.allCount = 0;
       $scope.importTitles = [];
       $scope.importTv = [];
-      $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}};//, added: {}, upgrades: {}};
-      $scope.objectkeys = Object.keys;
+      $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}};//, added: {}, upgraded: {}};
+      //$scope.objectkeys = Object.keys;
       $scope.compareFile = function(importName) {
         progressService.reset();
         var exportName = importName.replace('importT', 't');
-        var compared = {};
+        //var compared = {};
         $scope.changes["missing"+exportName] = {};
         $scope.changes["downgraded"+exportName] = {};
+/*
         for(var i = $scope.filtered[exportName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[exportName][i];
@@ -160,16 +161,18 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             for(var j = value.subitems.length-1; j>=0; j--)
             {
               var subvalue = value.subitems[j];
+              //if(subvalue.type == 'episode') break;
               compared[subvalue.contentId] = subvalue.videoQuality;
             }
           }
         }
-        alert(compared[1000905]);
+*/
+        alert($scope.contentVariants[1000905]);
         for(var i = $scope.filtered[importName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[importName][i];
           //Missing
-          if(compared[value.contentId] === undefined)
+          if($scope.contentVariants[value.contentId] === undefined)
           {
             $scope.changes["missing"+exportName][value.contentId] = value.videoQuality;
           }
@@ -177,9 +180,9 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
           else
           {
             //Downgraded
-            if(videoQualityList[compared[value.contentId]] < videoQualityList[value.videoQuality])
+            if(videoQualityList[$scope.contentVariants[value.contentId]] < videoQualityList[value.videoQuality])
             {
-              $scope.changes["downgraded"+exportName][value.contentId] = compared[value.contentId];
+              $scope.changes["downgraded"+exportName][value.contentId] = $scope.contentVariants[value.contentId];
             }
             //Upgraded
             //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
@@ -187,7 +190,6 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             //delete $scope.changes["missing"+exportName][value.contentId];
             //delete compared[value.contentId];
           }
-          if(value.contentId == 1000905) alert(value.contentId);
           progressService.value = 100 * Math.ceil(1 - (i / $scope.filtered[importName].length));
         }
         progressService.type = progressService.value==100 ? 'success' : '';
@@ -479,7 +481,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
           angular.forEach(data.content, function(value, key) {
             if($scope.contentVariants[key])
             {
-//TODO              console.log("Duplicate contentId: "+key);
+              //console.log("Duplicate contentId: "+key);
               if(videoQualityList[value.videoQuality] > videoQualityList[$scope.contentVariants[key].videoQuality])
               {
                 $scope.contentVariants[key] = value;
@@ -521,7 +523,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
         });
       };
 
-      //$scope.wishlistProgress = 0;
+      $scope.wishlistProgress = 0;
       $scope.wishlist = [];
       //$scope.filtered.wishlist = [];
       //$scope.totalWish = 0;
@@ -543,15 +545,15 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
           if(data.moreBelow && cntWish < batchLimit - 1){
             cntWish++;
             
-            //$scope.movieProgress = Math.ceil($scope.titles.length * 100 / $scope.totalCount);
+            $scope.wishlistProgress = Math.ceil($scope.wishlist.length / cntWish);
             
             getWished();
           } else {
             // progressService.reset();
-            //$scope.movieProgress = 100;
+            $scope.wishlistProgress = 100;
           }
-          //progressService.value = ($scope.movieProgress + $scope.tvProgress) / 2;
-          //progressService.type = progressService.value==100 ? 'success' : '';
+          progressService.value = ($scope.movieProgress + $scope.tvProgress + $scope.wishlistProgress) / 3;
+          progressService.type = progressService.value==100 ? 'success' : '';
           
         }, function(response) {
           if(response.data.error == true && response.data.status == 'authenticationExpired'){
@@ -589,27 +591,27 @@ controller('UserCtrl', ['$scope', '$location', 'alertService', 'vuduFactory',
 	$scope.user = null;
 
 	$scope.logIn = function() {
-	alertService.clear();
-	$scope.error = null;
+	  alertService.clear();
+	  $scope.error = null;
 
-	if(window.cf && window.cf.cfsubmit)
-	{
-		window.cf.cfsubmit();
-	}
+	  if(window.cf && window.cf.cfsubmit)
+	  {
+		  window.cf.cfsubmit();
+	  }
 
-	vuduFactory.signIn($scope.user.userName, $scope.user.password, $scope.user.logintype, document.getElementById('sensor_data').value, $scope.user.userId, $scope.user.sessionKey).then(function(response){
-			$location.url('/titles');
-		}, function(response) {
-			if(response.data && response.data.error){
+	  vuduFactory.signIn($scope.user.userName, $scope.user.password, $scope.user.logintype, document.getElementById('sensor_data').value, $scope.user.userId, $scope.user.sessionKey).then(function(response){
+			  $location.url('/titles');
+		  }, function(response) {
+			  if(response.data && response.data.error){
 				$scope.error = {
 					message: response.data.message,
 					status: response.data.status
 				};
-			} else {
-				$scope.error = {
-					message: 'Error occurred',
-					status: 'unknownError'
-				};
+			  } else {
+				  $scope.error = {
+					  message: 'Error occurred',
+					  status: 'unknownError'
+			  };
 			}
 		});
 	}

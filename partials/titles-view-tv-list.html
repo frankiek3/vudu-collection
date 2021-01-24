@@ -27,7 +27,7 @@
 				<!-- <td>{{title.type}}</td> -->
 				<td class="uv center" ng-class="{'is-uv': title.isUV}">{{title.isUV | conditional:'Yes':'No'}}</td>
 			</tr>
-			<tr ng-if="(title.type=='bundle' || title.type=='season' || title.type=='series') && title.expanded" ng-repeat-start="subtitle in title.subitems">
+			<tr ng-if="(title.type=='bundle' || title.type=='season' || title.type=='series') && (title.expanded || tv.allExpanded)" ng-repeat-start="subtitle in title.subitems">
 				<!-- <td colspan="{{col.subcolumns.length}}">{{subtitle.details}}</td> -->
 				<td class="center">{{subtitle.videoQuality}} / {{subtitle.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(subtitle.contentId)">{{subtitle.contentId}}</a></td>
@@ -41,7 +41,7 @@
 				<!-- <td>{{subtitle.type}}</td> -->
 				<td class="uv center" ng-class="{'is-uv': subtitle.isUV}">{{subtitle.isUV | conditional:'Yes':'No'}}</td>
 			</tr>
-			<tr ng-if="subtitle.type=='season' && subtitle.expanded && title.expanded" ng-repeat-end="" ng-repeat="episode in subtitle.subitems">
+			<tr ng-if="subtitle.type=='season' && ((subtitle.expanded && title.expanded) || tv.allExpanded" ng-repeat-end="" ng-repeat="episode in subtitle.subitems">
 				<!-- <td colspan="{{col.subcolumns.length}}">{{episode.details}}</td> -->
 				<td class="center">{{episode.videoQuality}} / {{episode.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(episode.contentId)">{{episode.contentId}}</a></td>
