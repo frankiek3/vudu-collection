@@ -148,6 +148,8 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       $scope.compareFile = function(importName) {
         var exportName = importName.replace('importT', 't');
         var compared = {};
+        $scope.changes["missing"+exportName] = {};
+        $scope.changes["downgraded"+exportName] = {};
         for(var i = $scope.filtered[exportName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[exportName][i];
@@ -172,7 +174,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
             //Upgraded
             //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
             //{}
-            delete $scope.changes["missing"+exportName][value.contentId];
+            //delete $scope.changes["missing"+exportName][value.contentId];
             delete compared[value.contentId];
           }
         }
