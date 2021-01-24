@@ -144,6 +144,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       $scope.importTitles = [];
       $scope.importTv = [];
       $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}};//, added: {}, upgrades: {}};
+      $scope.objectkeys = Object.keys;
       $scope.compareFile = function(importName) {
         var exportName = importName.replace('importT', 't');
         var compared = {};

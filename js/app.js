@@ -71,12 +71,9 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.controllers', 'app.services'
                    }, {});
                  }
                  rows.shift();
-                 alert(rows[0].contentId);
-                 //console.log(scope.importTitles);
                  scope.$apply(function(){
                    //$parse(attrs.ngFileModel).assign(scope, '');
-                   scope.importTitles = rows;
-                   //scope[attrs.ngFileModel] = rows;
+                   scope[attrs.ngFileModel] = rows;
                  });
                  //scope.compareFile(attrs.ngFileModel);
                };
