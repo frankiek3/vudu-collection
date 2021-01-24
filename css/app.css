@@ -10,7 +10,7 @@ footer {
 .title-area a { cursor: default; }
 
 .top-bar .name h1 a { width: 70%; }
-@media only screen and (min-width: 60.063em){
+@media only screen and (min-width: 40.063em){
   .top-bar .name h1 a {
     width: auto;
   }
@@ -126,7 +126,7 @@ button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[dis
 	background-color: #999;
 }
 
-.filter-row .count {
+.filter-row1 .count {
   position: absolute;
   top: 0.5rem;
   right: 1.5rem;

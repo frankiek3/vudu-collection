@@ -33,7 +33,8 @@
 		<div class="row collapse">
 			<div class="small-9 medium-9 columns">
 				<span class="prefix" ng-if="!query.length">{{filtered.tv.length && filtered.tv.length != totalTV | conditional:filtered.tv.length+' ('+sum(filtered.tv,'count')+') of '}}{{totalTV}} ({{allTV}})</span>
-				<a class="button active prefix" ng-if="query.length">{{filtered.tv.length}} ({{sum(filtered.tv,'count')}}) of {{totalTV}} ({{allTV}})</a><!-- Series Seasons Episodes -->
+				<a class="button active prefix" ng-if="query.length">{{filtered.tv.length}} ({{sum(filtered.tv,'count')}}) of {{totalTV}} ({{allTV}})</a>
+<!-- Series Seasons Episodes -->
 			</div>
 		</div>
 	</div>
