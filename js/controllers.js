@@ -155,14 +155,20 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
         for(var i = $scope.filtered[exportName].length-1; i>=0; i--)
         {
           var value = $scope.filtered[exportName][i];
-          compared[value.contentId] = value.videoQuality;
+          if(!compared[value.contentId] || (compared[value.contentId] && videoQualityList[compared[value.contentId]] < videoQualityList[value.videoQuality]))
+          {
+            compared[value.contentId] = value.videoQuality;
+          }
           if(value.subitems)
           {
             for(var j = value.subitems.length-1; j>=0; j--)
             {
               var subvalue = value.subitems[j];
               //if(subvalue.type == 'episode') break;
-              compared[subvalue.contentId] = subvalue.videoQuality;
+              if(!compared[subvalue.contentId] || (compared[subvalue.contentId] && videoQualityList[compared[subvalue.contentId]] < videoQualityList[subvalue.videoQuality]))
+              {
+                compared[subvalue.contentId] = subvalue.videoQuality;
+              }
             }
           }
         }
