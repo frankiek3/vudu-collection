@@ -488,15 +488,7 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
           //$scope.totalCount = data.totalCount;
           
           angular.forEach(data.content, function(value, key) {
-            if($scope.contentVariants[key])
-            {
-              //console.log("Duplicate contentId: "+key);
-              if(videoQualityList[value.videoQuality] > videoQualityList[$scope.contentVariants[key].videoQuality])
-              {
-                $scope.contentVariants[key] = value;
-              }
-            }
-            else
+            if(!$scope.contentVariants[key]) || (videoQualityList[value.videoQuality] > videoQualityList[$scope.contentVariants[key].videoQuality]))
             {
               $scope.contentVariants[key] = value;
             }

@@ -503,9 +503,10 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
               value.parent = item;
               if(!value.videoQuality)
               {
-                if(item.videoQuality && value.bestAvailVideoQuality)
+                if(item.videoQuality)// && value.bestAvailVideoQuality)
                 {
-                  value.videoQuality = videoQualityList[item.videoQuality] > videoQualityList[value.bestAvailVideoQuality] ? value.bestAvailVideoQuality : item.videoQuality;
+                  value.videoQuality = item.videoQuality;
+                  //value.videoQuality = videoQualityList[item.videoQuality] > videoQualityList[value.bestAvailVideoQuality] ? value.bestAvailVideoQuality : item.videoQuality;
                 }
               }
             });
@@ -535,9 +536,10 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
               }
               if(!value.videoQuality)
               {
-                if(item.videoQuality && value.bestAvailVideoQuality)
+                if(item.videoQuality)// && value.bestAvailVideoQuality)
                 {
-                  value.videoQuality = videoQualityList[item.videoQuality] > videoQualityList[value.bestAvailVideoQuality] ? value.bestAvailVideoQuality : item.videoQuality;
+                  value.videoQuality = item.videoQuality;
+                  //value.videoQuality = videoQualityList[item.videoQuality] > videoQualityList[value.bestAvailVideoQuality] ? value.bestAvailVideoQuality : item.videoQuality;
                 }
                 //else if(!item.videoQuality && value.bestAvailVideoQuality)
                 //{
