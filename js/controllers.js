@@ -143,13 +143,13 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       $scope.allCount = 0;
       $scope.importTitles = [];
       $scope.importTv = [];
-      $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}, addedtitles: {}, upgradedtitles: {}, }, addedtv: {}, upgradedtv: {}};
+      $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}, addedtitles: {}, upgradedtitles: {}, addedtv: {}, upgradedtv: {}};
       //$scope.objectkeys = Object.keys;
       $scope.compareFile = function(importName) {
         progressService.reset();
         var exportName = importName.replace('importT', 't');
         var compared = {};
-        $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}, addedtitles: {}, upgradedtitles: {}, }, addedtv: {}, upgradedtv: {}};
+        $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}, addedtitles: {}, upgradedtitles: {}, addedtv: {}, upgradedtv: {}};
         //$scope.changes["missing"+exportName] = {};
         //$scope.changes["downgraded"+exportName] = {};
 
