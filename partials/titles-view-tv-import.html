@@ -19,6 +19,16 @@
 <a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
 </div>
         </div>
+        <div>Upgraded: 
+<div ng-repeat="(contentId, videoQuality) in changes.upgradedtv">
+<a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
+</div>
+        </div>
+        <div>Added: 
+<div ng-repeat="(contentId, videoQuality) in changes.addedtv">
+<a class="tiny button secondary expand radius" ng-click="vuduLink(contentId)">{{contentId}}</a>
+</div>
+        </div>
 	</div>
 	<textarea style="width: 100%; height: 25rem;">{{ filtered.importTv = (importTv | filter:{title: query} | orderBy:orderProp) | toTVExport | toCsv }}</textarea>	
 </div>

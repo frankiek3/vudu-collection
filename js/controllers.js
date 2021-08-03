@@ -143,14 +143,15 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
       $scope.allCount = 0;
       $scope.importTitles = [];
       $scope.importTv = [];
-      $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}};//, added: {}, upgraded: {}};
+      $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}, addedtitles: {}, upgradedtitles: {}, }, addedtv: {}, upgradedtv: {}};
       //$scope.objectkeys = Object.keys;
       $scope.compareFile = function(importName) {
         progressService.reset();
         var exportName = importName.replace('importT', 't');
         var compared = {};
-        $scope.changes["missing"+exportName] = {};
-        $scope.changes["downgraded"+exportName] = {};
+        $scope.changes = {missingtitles: {}, downgradedtitles: {}, missingtv: {}, downgradedtv: {}, addedtitles: {}, upgradedtitles: {}, }, addedtv: {}, upgradedtv: {}};
+        //$scope.changes["missing"+exportName] = {};
+        //$scope.changes["downgraded"+exportName] = {};
 
         for(var i = $scope.filtered[exportName].length-1; i>=0; i--)
         {
@@ -192,14 +193,18 @@ controller('TitleListCtrl', ['$scope', '$filter', '$http', '$location', '$timeou
                 $scope.changes["downgraded"+exportName][value.contentId] = value.videoQuality;
               }
               //Upgraded
-              //else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
-              //{}
+              else if(videoQualityList[compared[value.contentId]] > videoQualityList[value.videoQuality])
+              {
+                $scope.changes["upgraded"+exportName][value.contentId] = value.videoQuality;
+              }
               //delete $scope.changes["missing"+exportName][value.contentId];
-              //delete compared[value.contentId];
+              delete compared[value.contentId];
             }
           }
           progressService.value = 100 * Math.ceil(1 - (i / $scope.filtered[importName].length));
         }
+        //Added
+        $scope.changes["added"+exportName] = compared;
         progressService.type = progressService.value==100 ? 'success' : '';
       };
 
