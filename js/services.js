@@ -422,8 +422,6 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
           type: data.type ? data.type[0] : null,
           haveUV: data.ultraVioletSyncStatus && data.ultraVioletSyncStatus[0],//"imported","exported"
           hasUV: data.ultraVioletLogicalAssetId && data.ultraVioletLogicalAssetId[0],
-          // ultraVioletLogicalAssetId: data.ultraVioletLogicalAssetId ? data.ultraVioletLogicalAssetId[0] : null,
-          // ultraVioletSyncStatus: data.ultraVioletSyncStatus ? data.ultraVioletSyncStatus[0] : null
           isMA: data.keyChestMaEditionUmid && data.keyChestMaEditionUmid[0] ? "MA" : null,
 //ptoKeyChestEligible//ptoKeyChestMaEligible//keyChestEditionUmid
 
@@ -439,11 +437,8 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
 
           price: "-",
 
-          
           // colorType: data.colorType ? data.colorType[0] : null,
-
           // contentRating: parseVuduType(data.contentRating[0], null),
-
           // bestDashVideoQuality: data.bestDashVideoQuality[0],
           // bestFlashVideoQuality: data.bestFlashVideoQuality[0],
           // bestLiveStreamVideoQuality: data.bestLiveStreamVideoQuality[0],
@@ -593,6 +588,7 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
           ultraVioletSyncStatus: data.ultraVioletSyncStatus && data.ultraVioletSyncStatus[0],
           videoQuality: data.videoQuality[0],
           price: 0,
+          //date: data.date[0],
         };
         angular.forEach(data.offers, function(value, key) {
           var offer = parseVuduType(value, null);

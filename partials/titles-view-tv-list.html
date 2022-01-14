@@ -13,7 +13,7 @@
 				<th width="8%">UV</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody ng-cloak>
 			<tr ng-repeat-start="title in filtered.tv = (tv | filter:{title: query} | orderBy:orderProp)">
 				<td class="center">{{title.videoQuality}} / {{title.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(title.contentId)">{{title.contentId}}</a></td>
