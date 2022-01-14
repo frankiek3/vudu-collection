@@ -15,7 +15,7 @@
 			</tr>
 		</thead>
 		<tbody ng-cloak>
-			<tr ng-repeat-start="title in filtered.wishlist = (wishlist | filter:{title: query} | orderBy:orderProp)">
+			<tr ng-repeat-start="title in filtered.wishlist = (wishlist | filter:{title: query} | orderBy:orderProp) track by title.contentId">
 				<td>{{title.price}}</td>
 				<td class="center">{{title.videoQuality}} / {{title.bestAvailVideoQuality}}</td>
 				<td class="center"><a class="tiny button secondary expand radius" ng-click="vuduLink(title.contentId)">{{title.contentId}}</a></td>
