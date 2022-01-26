@@ -87,23 +87,26 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
   var sessionKeyRequest = function(userName, password, loginType, sensor_data, userId, sessionKey)
   {
 	var params = {
+		contentType: 'application/x-vudu-url-note',
+		query: {
 		claimedAppId: appId,
 		format: 'application/json',
 		contentEncoding: "gzip",
-		callback: 'JSON_CALLBACK',
 		_type: loginType == "wmt" ? "linkedAccountSessionKeyRequest" : 'sessionKeyRequest',
 		followup: 'user',
-		//followup: 'vldfa',
+		followup: 'vldfa',
 		noCache: 'true',
 		password: password,
 		//sensorData: sensor_data,
 		userName: userName,
 		weakSeconds: "25920000"
+		},
+		callback: 'JSON_CALLBACK'
 	};
 console.log(params);
 	if(loginType == "wmt")
 	{
-		params.oauthClientId = "wmt";
+		params.query.oauthClientId = "wmt";
 	}
 	return $http.jsonp(url, {params: params}).then(function(response) {
 console.log(response.data);
