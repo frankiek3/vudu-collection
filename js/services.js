@@ -75,7 +75,7 @@ factory('progressService', function() {
 factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
     var url = 'https://api.vudu.com/api2/';
     var cachedurl = "https://apicache.vudu.com/api2/";
-    var appId = 'vudu-collection';
+    var appId = 'macWeb';
     var count = 100;
     var user = null;
     var videoQualityList = {"sd": 0, "hd": 1, "hdx": 2, "uhd": 3};
@@ -93,7 +93,7 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
 		contentEncoding: "gzip",
 		_type: (loginType == "wmt" ? "linkedAccountSessionKeyRequest" : 'sessionKeyRequest'),
 		followup: 'user',
-		//followup: 'vldfa',
+		followup: 'vIdfa',
 		noCache: 'true',
 		password: password,
 		//sensorData: sensor_data,
