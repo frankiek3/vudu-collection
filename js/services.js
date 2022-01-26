@@ -74,7 +74,7 @@ factory('progressService', function() {
 
 factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
     var url = 'https://api.vudu.com/api2/';
-    var cachedurl = "http://apicache.vudu.com/api2/";
+    var cachedurl = "https://apicache.vudu.com/api2/";
     var appId = 'vudu-collection';
     var count = 100;
     var user = null;
@@ -87,24 +87,23 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
   var sessionKeyRequest = function(userName, password, loginType, sensor_data, userId, sessionKey)
   {
 	var params = {
-		contentType: 'application/x-vudu-url-note',
-		query: 'claimedAppId=' + appId + '&' +
-		'format=application/json' + '&' +
-		'contentEncoding=gzip' + '&' +
-		'_type' + (loginType == 'wmt' ? 'linkedAccountSessionKeyRequest' : 'sessionKeyRequest') + '&' +
-		'followup=user' + '&' +
-		'noCache=true' + '&' +
-		'password=' + password + '&' +
-		'userName=' + userName + '&' +
-		'weakSeconds=25920000',
 		callback: 'JSON_CALLBACK'
+		claimedAppId: appId,
+		format: 'application/json',
+		contentEncoding: "gzip",
+		_type: (loginType == "wmt" ? "linkedAccountSessionKeyRequest" : 'sessionKeyRequest'),
+		followup: 'user',
+		//followup: 'vldfa',
+		noCache: 'true',
+		password: password,
+		//sensorData: sensor_data,
+		userName: userName,
+		weakSeconds: "25920000"
 	};
-	//followup: 'vldfa',
-	//sensorData: sensor_data,
 console.log(params);
 	if(loginType == "wmt")
 	{
-		params.query.oauthClientId = "wmt";
+		params.oauthClientId = "wmt";
 	}
 	return $http.jsonp(url, {params: params}).then(function(response) {
 console.log(response.data);
