@@ -88,21 +88,19 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
   {
 	var params = {
 		contentType: 'application/x-vudu-url-note',
-		query: 
-		'claimedAppId=' + appId + '&' +
+		query: 'claimedAppId=' + appId + '&' +
 		'format=application/json' + '&' +
 		'contentEncoding=gzip' + '&' +
 		'_type' + (loginType == 'wmt' ? 'linkedAccountSessionKeyRequest' : 'sessionKeyRequest') + '&' +
 		'followup=user' + '&' +
-		//followup: 'vldfa',
 		'noCache=true' + '&' +
 		'password=' + password + '&' +
-		//sensorData: sensor_data,
 		'userName=' + userName + '&' +
-		'weakSeconds=25920000'
-		},
+		'weakSeconds=25920000',
 		callback: 'JSON_CALLBACK'
 	};
+	//followup: 'vldfa',
+	//sensorData: sensor_data,
 console.log(params);
 	if(loginType == "wmt")
 	{
