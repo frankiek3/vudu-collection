@@ -74,7 +74,7 @@ factory('progressService', function() {
 
 factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
     var url = 'https://api.vudu.com/api2/';
-    var cachedurl = "https://apicache.vudu.com/api2/";
+    var cachedurl = "http://apicache.vudu.com/api2/";
     var appId = 'vudu-collection';
     var count = 100;
     var user = null;
@@ -99,7 +99,7 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
 		'password=' + password + '&' +
 		//sensorData: sensor_data,
 		'userName=' + userName + '&' +
-		'weakSeconds=25920000"
+		'weakSeconds=25920000'
 		},
 		callback: 'JSON_CALLBACK'
 	};
