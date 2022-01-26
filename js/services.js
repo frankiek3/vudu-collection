@@ -93,17 +93,20 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
 		callback: 'JSON_CALLBACK',
 		_type: loginType == "wmt" ? "linkedAccountSessionKeyRequest" : 'sessionKeyRequest',
 		followup: 'user',
+		followup: 'vldfa',
+		noCache: 'true',
 		password: password,
-		sensorData: sensor_data,
+		//sensorData: sensor_data,
 		userName: userName,
 		weakSeconds: "25920000"
 	};
-//console.log(params);
+console.log(params);
 	if(loginType == "wmt")
 	{
 		params.oauthClientId = "wmt";
 	}
 	return $http.jsonp(url, {params: params}).then(function(response) {
+console.log(response);
 	if(response.data && response.data.status)
 	{
 		if(response.data.status[0] == 'success')
