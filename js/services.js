@@ -87,7 +87,7 @@ factory('vuduFactory', function($http, $q, $cookieStore, $timeout) {
   var sessionKeyRequest = function(userName, password, loginType, sensor_data, userId, sessionKey)
   {
 	var params = {
-		callback: 'JSON_CALLBACK'
+		callback: 'JSON_CALLBACK',
 		claimedAppId: appId,
 		format: 'application/json',
 		contentEncoding: "gzip",
